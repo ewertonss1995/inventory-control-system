@@ -26,6 +26,7 @@ public class ProductController {
     public static final String LOG_PRODUCT_RECOVERY_OPERATION = "[ProductController] - Operation received to recovery product with ID: {}";
     public static final String LOG_PRODUCTS_RECOVERY_OPERATION = "[ProductController] - Operation received to recovery products";
     public static final String LOG_PRODUCT_UPDATE_OPERATION = "[ProductController] - Operation received to update product with ID: {}";
+    public static final String LOG_PRODUCT_DELETE_OPERATION = "[ProductController] - Operation received to delete product with ID: {}";
 
     private final ProductUsecase useCase;
 
@@ -73,5 +74,12 @@ public class ProductController {
                 .message(String.format("Product with ID %s was updated successfully.", productId))
                 .status(HttpStatus.OK.value())
                 .build());
+    }
+
+    @DeleteMapping("/{productId}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deletarRegistro(@PathVariable Integer productId) {
+        LOGGER.info(LOG_PRODUCT_DELETE_OPERATION, productId);
+        useCase.deleteProduct(productId);
     }
 }
