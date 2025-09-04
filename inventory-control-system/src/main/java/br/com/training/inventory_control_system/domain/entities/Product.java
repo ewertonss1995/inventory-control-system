@@ -45,6 +45,9 @@ public class Product {
     @Column(name = "registration_date", nullable = false)
     private LocalDateTime registrationDate;
 
+    @Column(name = "update_date", nullable = false)
+    private LocalDateTime updateDate;
+
     @Column(name = "remove_date")
     private LocalDateTime removeDate;
 

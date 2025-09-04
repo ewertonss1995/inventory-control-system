@@ -10,9 +10,9 @@ import br.com.training.inventory_control_system.domain.repositories.ProductRepos
 import br.com.training.inventory_control_system.port.in.ProductUsecase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -34,41 +34,44 @@ public class ProductService implements ProductUsecase {
 
     @Override
     public GetProductResponse getProduct(Integer productId) {
-        try {
             Product entity = repository.findById(productId).
                     orElseThrow(() -> new ProductNotFoundException(
-                            String.format("Product %s does not exist in the database.", productId)));
+                            String.format("Unable to get product with ID: %s", productId)));
 
             return mapper.toGetProductResponse(entity);
-
-        } catch (DataAccessException e) {
-            LOGGER.error("[ProductService] - Error getting product: {}", e.getMessage());
-            throw e;
-        } catch (ProductNotFoundException e) {
-            LOGGER.error("[ProductService] - Product not found: {}", e.getMessage());
-            throw e;
-        } catch (Exception e) {
-            LOGGER.error("[ProductService] - Unexpected error retrieving product: {}", e.getMessage());
-            throw new ProductCustomException(
-                    String.format("Unable to get product: %s", e.getMessage()), e);
-        }
     }
 
     @Override
     public List<GetProductResponse> getProducts() {
         try {
             List<Product> entities = repository.findAll();
-
             return mapper.toGetProductResponseList(entities);
-
-        } catch (DataAccessException e) {
-            LOGGER.error("[ProductService] - Error getting products: {}", e.getMessage());
-            throw e;
 
         } catch (Exception e) {
             LOGGER.error("[ProductService] - Unexpected error retrieving products: {}", e.getMessage());
             throw new ProductCustomException(
                     String.format("Unable to get products: %s", e.getMessage()), e);
         }
+    }
+
+    @Override
+    public void updateProduct(Integer productId, ProductRequest request) {
+        try {
+            Product entity = repository.findById(productId).
+                    orElseThrow(() -> new ProductNotFoundException(
+                            String.format("Unable to get product with ID %s for update.", productId)));
+
+            mapper.updateEntityFromRequest(request, entity);
+
+            entity.setUpdateDate(LocalDateTime.now());
+            repository.save(entity);
+
+        } catch (Exception e) {
+            LOGGER.error("[ProductService] - Unexpected error updating products: {}", e.getMessage());
+            throw new ProductCustomException(
+                    String.format("Unable to update product: %s", e.getMessage()), e);
+        }
+
+        LOGGER.info("[ProductService] - Product with ID: {} was updated successfully.", productId);
     }
 }
