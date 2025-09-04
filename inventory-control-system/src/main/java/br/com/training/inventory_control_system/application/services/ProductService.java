@@ -29,16 +29,22 @@ public class ProductService implements ProductUsecase {
 
     @Override
     public void saveProduct(ProductRequest request) {
-        repository.save(mapper.toEntity(request));
+        try {
+            repository.save(mapper.toEntity(request));
+        } catch (Exception e) {
+            LOGGER.error("[ProductService] - Unexpected error posting product: {}", e.getMessage());
+            throw new ProductCustomException(
+                    String.format("Unable to update product: %s", e.getMessage()), e);
+        }
     }
 
     @Override
     public GetProductResponse getProduct(Integer productId) {
-            Product entity = repository.findById(productId).
-                    orElseThrow(() -> new ProductNotFoundException(
-                            String.format("Unable to get product with ID: %s", productId)));
+        Product entity = repository.findById(productId).
+                orElseThrow(() -> new ProductNotFoundException(
+                        String.format("Unable to get product with ID: %s", productId)));
 
-            return mapper.toGetProductResponse(entity);
+        return mapper.toGetProductResponse(entity);
     }
 
     @Override
@@ -73,5 +79,16 @@ public class ProductService implements ProductUsecase {
         }
 
         LOGGER.info("[ProductService] - Product with ID: {} was updated successfully.", productId);
+    }
+
+    @Override
+    public void deleteProduct(Integer productId) {
+        Product entity = repository.findById(productId).
+                orElseThrow(() -> new ProductNotFoundException(
+                        String.format("Unable to get product with ID %s for update.", productId)));
+
+        repository.delete(entity);
+
+        LOGGER.info("[ProductService] - Product with ID: {} was deleted successfully.", productId);
     }
 }
