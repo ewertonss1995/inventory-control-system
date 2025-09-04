@@ -9,4 +9,5 @@ public interface ProductUsecase {
     void saveProduct(ProductRequest request);
     GetProductResponse getProduct(Integer productId);
     List<GetProductResponse> getProducts();
+    void updateProduct(Integer productId, ProductRequest request);
 }

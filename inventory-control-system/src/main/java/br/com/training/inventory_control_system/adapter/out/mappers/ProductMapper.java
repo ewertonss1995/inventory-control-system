@@ -5,6 +5,7 @@ import br.com.training.inventory_control_system.adapter.out.responses.GetProduct
 import br.com.training.inventory_control_system.domain.entities.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -18,4 +19,8 @@ public interface ProductMapper {
     GetProductResponse toGetProductResponse(Product entity);
 
     List<GetProductResponse> toGetProductResponseList(List<Product> entities);
+
+    @Mapping(target = "registrationDate", ignore = true)
+    void updateEntityFromRequest(ProductRequest request, @MappingTarget Product entity);
+
 }

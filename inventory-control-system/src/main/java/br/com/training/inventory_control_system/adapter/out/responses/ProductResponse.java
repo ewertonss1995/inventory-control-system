@@ -3,7 +3,7 @@ package br.com.training.inventory_control_system.adapter.out.responses;
 import lombok.Builder;
 
 @Builder
-public record PostProductResponse (
+public record ProductResponse(
     String message,
     int status
 ) {}
