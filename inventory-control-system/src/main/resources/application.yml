@@ -14,5 +14,5 @@
     datasource:
       url: jdbc:postgresql://dpg-d2tidcmuk2gs73ctvt00-a:5432/inventorycontroldb
       username: ${USER_DB}
-      password: {PASSWORD_DB}
+      password: ${PASSWORD_DB}
       driver-class-name: org.postgresql.Driver  # Parametro exigido pelo RENDER
