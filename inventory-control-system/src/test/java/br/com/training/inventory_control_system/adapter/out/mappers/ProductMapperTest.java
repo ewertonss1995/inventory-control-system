@@ -62,7 +62,7 @@ class ProductMapperTest {
         assertEquals(TOTAL_PRICE_MOCK, response.getTotalPrice());
         assertEquals(CATEGORY_MOCK, response.getCategory());
         assertEquals(DATE_NOW_MOCK, response.getRegistrationDate());
-        assertNull(response.getRemoveDate());
+        assertNull(response.getUpdateDate());
     }
 
     @Test
@@ -86,7 +86,7 @@ class ProductMapperTest {
         assertEquals(TOTAL_PRICE_MOCK, responseList.get(0).getTotalPrice());
         assertEquals(CATEGORY_MOCK, responseList.get(0).getCategory());
         assertEquals(DATE_NOW_MOCK, responseList.get(0).getRegistrationDate());
-        assertNull(responseList.get(0).getRemoveDate());
+        assertNull(responseList.get(0).getUpdateDate());
 
     }
 

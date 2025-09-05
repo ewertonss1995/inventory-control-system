@@ -11,7 +11,7 @@
 	<groupId>br.com.training</groupId>
 	<artifactId>inventory-control-system</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Inventory Control System</name>
+	<name>inventory-control-system</name>
 	<description>Project to manage product inventory control</description>
 	<url/>
 	<licenses>
@@ -46,9 +46,9 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.33</version>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.7</version>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>

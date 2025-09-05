@@ -30,11 +30,12 @@ public class ProductService implements ProductUsecase {
     @Override
     public void saveProduct(ProductRequest request) {
         try {
-            repository.save(mapper.toEntity(request));
+            Product entity = mapper.toEntity(request);
+            repository.save(entity);
         } catch (Exception e) {
             LOGGER.error("[ProductService] - Unexpected error posting product: {}", e.getMessage());
             throw new ProductCustomException(
-                    String.format("Unable to update product: %s", e.getMessage()), e);
+                    String.format("Unable to save product: %s", e.getMessage()), e);
         }
     }
 

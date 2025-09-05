@@ -32,5 +32,5 @@ public class GetProductResponse {
 
     private LocalDateTime registrationDate;
 
-    private LocalDateTime removeDate;
+    private LocalDateTime updateDate;
 }
