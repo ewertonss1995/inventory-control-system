@@ -69,7 +69,7 @@ class ProductServiceTest {
             productService.saveProduct(productRequest);
         });
 
-        assertEquals("Unable to update product: Error", exception.getMessage());
+        assertEquals("Unable to save product: Error", exception.getMessage());
         verify(repository, times(1)).save(product);
     }
 
