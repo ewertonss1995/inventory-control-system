@@ -12,7 +12,7 @@
           physical-application: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       show-sql: true
     datasource:
-      url: jdbc:postgresql://localhost:5432/inventorycontroldb
-      username: ${USER_DB:postgres}
-      password: ${PASSWORD_DB:manager}
+      url: jdbc:postgresql://dpg-d2tidcmuk2gs73ctvt00-a:5432/inventorycontroldb
+      username: admin
+      password: RZIVKD8Nfc8Gjz76mWkkc1TDJztgHtmh
       driver-class-name: org.postgresql.Driver  # Parametro exigido pelo RENDER
