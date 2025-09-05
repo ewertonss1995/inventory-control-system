@@ -14,6 +14,7 @@ public interface ProductMapper {
 
     @Mapping(target = "productId", ignore = true)
     @Mapping(target = "totalPrice", ignore = true)
+    @Mapping(target = "updateDate", ignore = true)
     Product toEntity(ProductRequest request);
 
     GetProductResponse toGetProductResponse(Product entity);

@@ -1,13 +1,18 @@
-spring:
-  application:
-    name: Inventory Control System
-  jpa:
-    hibernate:
-      naming:
-        physical-application: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    show-sql: true
-  datasource:
-    url: jdbc:mysql://localhost:3306/inventory_control?allowPublicKeyRetrieval=true&useSSL=false
-    username: root
-    password: abc123.A
-    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  spring:
+    application:
+      name: Inventory Control System
+    jpa:
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQLDialect # Parametro exigido pelo RENDER
+      hibernate:
+        ddl-auto: update
+        naming:
+          physical-application: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      show-sql: true
+    datasource:
+      url: jdbc:postgresql://localhost:5432/inventorycontroldb
+      username: ${USER_DB:postgres}
+      password: ${PASSWORD_DB:manager}
+      driver-class-name: org.postgresql.Driver  # Parametro exigido pelo RENDER
