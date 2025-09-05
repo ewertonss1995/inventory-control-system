@@ -22,5 +22,4 @@ public interface ProductMapper {
 
     @Mapping(target = "registrationDate", ignore = true)
     void updateEntityFromRequest(ProductRequest request, @MappingTarget Product entity);
-
 }
