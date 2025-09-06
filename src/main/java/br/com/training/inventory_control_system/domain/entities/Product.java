@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Table;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Column;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -41,9 +43,6 @@ public class Product {
     @Column(name = "total_price", nullable = false)
     private BigDecimal totalPrice;
 
-    @Column(name = "category", nullable = false, length = 50)
-    private String category;
-
     @Column(name = "registration_date", nullable = false)
     private LocalDateTime registrationDate;
 
@@ -52,6 +51,10 @@ public class Product {
 
     @Column(name = "remove_date")
     private LocalDateTime removeDate;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     @PrePersist
     protected void onCreate() {
