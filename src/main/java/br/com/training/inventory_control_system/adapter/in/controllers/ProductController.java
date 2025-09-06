@@ -2,18 +2,27 @@ package br.com.training.inventory_control_system.adapter.in.controllers;
 
 import br.com.training.inventory_control_system.adapter.in.requests.ProductRequest;
 import br.com.training.inventory_control_system.adapter.out.responses.GetProductResponse;
-import br.com.training.inventory_control_system.adapter.out.responses.ProductResponse;
+import br.com.training.inventory_control_system.adapter.out.responses.ApiResponse;
 import br.com.training.inventory_control_system.port.in.ProductUsecase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import jakarta.validation.Valid;
 
 import java.util.List;
 
+import static br.com.training.inventory_control_system.adapter.Constants.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -22,12 +31,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class ProductController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
-    public static final String LOG_PRODUCT_SAVE_OPERATION = "[ProductController] - Operation received to save product: {}";
-    public static final String LOG_PRODUCT_RECOVERY_OPERATION = "[ProductController] - Operation received to recovery product with ID: {}";
-    public static final String LOG_PRODUCTS_RECOVERY_OPERATION = "[ProductController] - Operation received to recovery products";
-    public static final String LOG_PRODUCT_UPDATE_OPERATION = "[ProductController] - Operation received to update product with ID: {}";
-    public static final String LOG_PRODUCT_DELETE_OPERATION = "[ProductController] - Operation received to delete product with ID: {}";
-
     private final ProductUsecase useCase;
 
     public ProductController(ProductUsecase useCase) {
@@ -35,13 +38,13 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponse> saveProduct(@RequestBody @Valid ProductRequest request) {
+    public ResponseEntity<ApiResponse> saveProduct(@RequestBody @Valid ProductRequest request) {
         LOGGER.info(LOG_PRODUCT_SAVE_OPERATION, request.getProductName());
 
         useCase.saveProduct(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ProductResponse.builder()
+                .body(ApiResponse.builder()
                         .message(String.format("The product named '%s' has been successfully created.",
                                 request.getProductName()))
                         .status(HttpStatus.CREATED.value())
@@ -65,12 +68,12 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Integer productId, @RequestBody @Valid ProductRequest request) {
+    public ResponseEntity<ApiResponse> updateProduct(@PathVariable Integer productId, @RequestBody @Valid ProductRequest request) {
         LOGGER.info(LOG_PRODUCT_UPDATE_OPERATION, productId);
 
         useCase.updateProduct(productId, request);
 
-        return ResponseEntity.ok(ProductResponse.builder()
+        return ResponseEntity.ok(ApiResponse.builder()
                 .message(String.format("Product with ID %s was updated successfully.", productId))
                 .status(HttpStatus.OK.value())
                 .build());
