@@ -1,22 +1,16 @@
 package br.com.training.inventory_control_system.mocks;
 
 import br.com.training.inventory_control_system.adapter.in.requests.ProductRequest;
+import br.com.training.inventory_control_system.adapter.out.responses.GetCategoryResponse;
 import br.com.training.inventory_control_system.adapter.out.responses.GetProductResponse;
+import br.com.training.inventory_control_system.domain.entities.Category;
 import br.com.training.inventory_control_system.domain.entities.Product;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.List;
 
-public class ProductRequestMock {
+import static br.com.training.inventory_control_system.mocks.Constants.*;
 
-    public static final String NAME_MOCK = "Product test";
-    public static final String DESCRIPTION_MOCK = "Product Description";
-    public static final BigDecimal UNIT_PRICE_MOCK = BigDecimal.valueOf(10.00);
-    public static final int QUANTITY_MOCK = 10;
-    public static final String CATEGORY_MOCK = "Product category";
-    public static final LocalDateTime DATE_NOW_MOCK = LocalDateTime.now();
-    public static final int ID_MOCK = 1;
-    public static final BigDecimal TOTAL_PRICE_MOCK = BigDecimal.valueOf(100.00);
+public class ProductMock {
 
     public static ProductRequest getProductRequestMock() {
         return new ProductRequest(
@@ -24,9 +18,7 @@ public class ProductRequestMock {
                 DESCRIPTION_MOCK,
                 UNIT_PRICE_MOCK,
                 QUANTITY_MOCK,
-                CATEGORY_MOCK,
-                DATE_NOW_MOCK,
-                null);
+                ID_MOCK);
     }
 
     public static Product getProductMock() {
@@ -37,10 +29,9 @@ public class ProductRequestMock {
                 UNIT_PRICE_MOCK,
                 QUANTITY_MOCK,
                 TOTAL_PRICE_MOCK,
-                CATEGORY_MOCK,
                 DATE_NOW_MOCK,
                 null,
-                null);
+                getCategory());
     }
 
     public static GetProductResponse getGetProductResponseMock() {
@@ -51,8 +42,21 @@ public class ProductRequestMock {
                 UNIT_PRICE_MOCK,
                 QUANTITY_MOCK,
                 TOTAL_PRICE_MOCK,
-                CATEGORY_MOCK,
+                getGetCategoryResponse(),
                 DATE_NOW_MOCK,
                 null);
+    }
+
+    private static GetCategoryResponse getGetCategoryResponse() {
+        return new GetCategoryResponse(ID_MOCK, CATEGORY_NAME_MOCK, DATE_NOW_MOCK, null);
+    }
+
+    private static Category getCategory() {
+        return new Category(
+                ID_MOCK,
+                CATEGORY_NAME_MOCK,
+                DATE_NOW_MOCK,
+                null,
+                List.of(new Product()));
     }
 }

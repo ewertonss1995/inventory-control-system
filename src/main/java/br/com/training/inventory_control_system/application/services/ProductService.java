@@ -41,7 +41,7 @@ public class ProductService implements ProductUsecase {
 
     @Override
     public GetProductResponse getProduct(Integer productId) {
-        Product entity = repository.findById(productId).
+        Product entity = repository.findProductWithCategory(productId).
                 orElseThrow(() -> new ProductNotFoundException(
                         String.format("Unable to get product with ID: %s", productId)));
 
