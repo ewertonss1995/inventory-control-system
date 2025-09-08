@@ -2,7 +2,7 @@ package br.com.training.inventory_control_system.adapter.in.controllers;
 
 import br.com.training.inventory_control_system.adapter.in.requests.ProductRequest;
 import br.com.training.inventory_control_system.adapter.out.responses.GetProductResponse;
-import br.com.training.inventory_control_system.adapter.out.responses.ProductResponse;
+import br.com.training.inventory_control_system.adapter.out.responses.ApiResponse;
 import br.com.training.inventory_control_system.port.in.ProductUsecase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,7 +49,7 @@ class ProductControllerTest {
     void testSaveProduct() {
         doNothing().when(useCase).saveProduct(any(ProductRequest.class));
 
-        ResponseEntity<ProductResponse> response = productController.saveProduct(productRequest);
+        ResponseEntity<ApiResponse> response = productController.saveProduct(productRequest);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -84,7 +84,7 @@ class ProductControllerTest {
     void testUpdateProduct() {
         doNothing().when(useCase).updateProduct(any(Integer.class), any(ProductRequest.class));
 
-        ResponseEntity<ProductResponse> response = productController.updateProduct(1, productRequest);
+        ResponseEntity<ApiResponse> response = productController.updateProduct(1, productRequest);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());

@@ -6,7 +6,6 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Builder
@@ -14,21 +13,11 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetProductResponse {
+public class GetCategoryResponse {
 
-    private Integer productId;
+    private Integer categoryId;
 
-    private String productName;
-
-    private String productDescription;
-
-    private BigDecimal unitPrice;
-
-    private Integer quantity;
-
-    private BigDecimal totalPrice;
-
-    private GetCategoryResponse category;
+    private String categoryName;
 
     private LocalDateTime registrationDate;
 

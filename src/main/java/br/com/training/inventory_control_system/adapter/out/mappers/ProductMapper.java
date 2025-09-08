@@ -15,6 +15,7 @@ public interface ProductMapper {
     @Mapping(target = "productId", ignore = true)
     @Mapping(target = "totalPrice", ignore = true)
     @Mapping(target = "updateDate", ignore = true)
+    @Mapping(target = "category.categoryId", source = "categoryId")
     Product toEntity(ProductRequest request);
 
     GetProductResponse toGetProductResponse(Product entity);
@@ -22,5 +23,6 @@ public interface ProductMapper {
     List<GetProductResponse> toGetProductResponseList(List<Product> entities);
 
     @Mapping(target = "registrationDate", ignore = true)
+    @Mapping(target = "category.categoryId", source = "categoryId")
     void updateEntityFromRequest(ProductRequest request, @MappingTarget Product entity);
 }

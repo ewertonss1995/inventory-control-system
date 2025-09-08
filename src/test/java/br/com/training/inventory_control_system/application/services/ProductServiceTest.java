@@ -3,8 +3,8 @@ package br.com.training.inventory_control_system.application.services;
 import br.com.training.inventory_control_system.adapter.in.requests.ProductRequest;
 import br.com.training.inventory_control_system.adapter.out.mappers.ProductMapper;
 import br.com.training.inventory_control_system.adapter.out.responses.GetProductResponse;
-import br.com.training.inventory_control_system.application.exception.ProductCustomException;
-import br.com.training.inventory_control_system.application.exception.ProductNotFoundException;
+import br.com.training.inventory_control_system.application.exception.product.ProductCustomException;
+import br.com.training.inventory_control_system.application.exception.product.ProductNotFoundException;
 import br.com.training.inventory_control_system.domain.entities.Product;
 import br.com.training.inventory_control_system.domain.repositories.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,26 +75,26 @@ class ProductServiceTest {
 
     @Test
     void testGetProduct() {
-        when(repository.findById(1)).thenReturn(Optional.of(product));
+        when(repository.findProductWithCategory(1)).thenReturn(Optional.of(product));
         when(mapper.toGetProductResponse(product)).thenReturn(productResponse);
 
         GetProductResponse response = productService.getProduct(1);
 
         assertEquals(productResponse, response);
-        verify(repository, times(1)).findById(1);
+        verify(repository, times(1)).findProductWithCategory(1);
         verify(mapper, times(1)).toGetProductResponse(product);
     }
 
     @Test
     void testGetProductThrowsNotFoundException() {
-        when(repository.findById(1)).thenReturn(Optional.empty());
+        when(repository.findProductWithCategory(1)).thenReturn(Optional.empty());
 
         ProductNotFoundException exception = assertThrows(ProductNotFoundException.class, () -> {
             productService.getProduct(1);
         });
 
         assertEquals("Unable to get product with ID: 1", exception.getMessage());
-        verify(repository, times(1)).findById(1);
+        verify(repository, times(1)).findProductWithCategory(1);
     }
 
     @Test

@@ -3,8 +3,8 @@ package br.com.training.inventory_control_system.application.services;
 import br.com.training.inventory_control_system.adapter.in.requests.ProductRequest;
 import br.com.training.inventory_control_system.adapter.out.mappers.ProductMapper;
 import br.com.training.inventory_control_system.adapter.out.responses.GetProductResponse;
-import br.com.training.inventory_control_system.application.exception.ProductCustomException;
-import br.com.training.inventory_control_system.application.exception.ProductNotFoundException;
+import br.com.training.inventory_control_system.application.exception.product.ProductCustomException;
+import br.com.training.inventory_control_system.application.exception.product.ProductNotFoundException;
 import br.com.training.inventory_control_system.domain.entities.Product;
 import br.com.training.inventory_control_system.domain.repositories.ProductRepository;
 import br.com.training.inventory_control_system.port.in.ProductUsecase;
@@ -41,7 +41,7 @@ public class ProductService implements ProductUsecase {
 
     @Override
     public GetProductResponse getProduct(Integer productId) {
-        Product entity = repository.findById(productId).
+        Product entity = repository.findProductWithCategory(productId).
                 orElseThrow(() -> new ProductNotFoundException(
                         String.format("Unable to get product with ID: %s", productId)));
 
