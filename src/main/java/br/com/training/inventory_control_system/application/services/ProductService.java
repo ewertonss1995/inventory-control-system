@@ -3,13 +3,14 @@ package br.com.training.inventory_control_system.application.services;
 import br.com.training.inventory_control_system.adapter.in.requests.ProductRequest;
 import br.com.training.inventory_control_system.adapter.out.mappers.ProductMapper;
 import br.com.training.inventory_control_system.adapter.out.responses.GetProductResponse;
-import br.com.training.inventory_control_system.application.exception.product.ProductCustomException;
+import br.com.training.inventory_control_system.application.exception.GeneralCustomException;
 import br.com.training.inventory_control_system.application.exception.product.ProductNotFoundException;
 import br.com.training.inventory_control_system.domain.entities.Product;
 import br.com.training.inventory_control_system.domain.repositories.ProductRepository;
 import br.com.training.inventory_control_system.port.in.ProductUsecase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -34,7 +35,7 @@ public class ProductService implements ProductUsecase {
             repository.save(entity);
         } catch (Exception e) {
             LOGGER.error("[ProductService] - Unexpected error posting product: {}", e.getMessage());
-            throw new ProductCustomException(
+            throw new GeneralCustomException(
                     String.format("Unable to save product: %s", e.getMessage()), e);
         }
     }
@@ -43,7 +44,7 @@ public class ProductService implements ProductUsecase {
     public GetProductResponse getProduct(Integer productId) {
         Product entity = repository.findProductWithCategory(productId).
                 orElseThrow(() -> new ProductNotFoundException(
-                        String.format("Unable to get product with ID: %s", productId)));
+                        String.format("Unable to get product with ID %s.", productId)));
 
         return mapper.toGetProductResponse(entity);
     }
@@ -56,8 +57,8 @@ public class ProductService implements ProductUsecase {
 
         } catch (Exception e) {
             LOGGER.error("[ProductService] - Unexpected error retrieving products: {}", e.getMessage());
-            throw new ProductCustomException(
-                    String.format("Unable to get products: %s", e.getMessage()), e);
+            throw new EmptyResultDataAccessException(
+                    String.format("Unable to get products: %s", e.getMessage()), 1);
         }
     }
 
@@ -66,7 +67,7 @@ public class ProductService implements ProductUsecase {
         try {
             Product entity = repository.findById(productId).
                     orElseThrow(() -> new ProductNotFoundException(
-                            String.format("Unable to get product with ID %s for update.", productId)));
+                            String.format("Unable to get product with ID %s.", productId)));
 
             mapper.updateEntityFromRequest(request, entity);
 
@@ -75,8 +76,8 @@ public class ProductService implements ProductUsecase {
 
         } catch (Exception e) {
             LOGGER.error("[ProductService] - Unexpected error updating products: {}", e.getMessage());
-            throw new ProductCustomException(
-                    String.format("Unable to update product: %s", e.getMessage()), e);
+            throw new GeneralCustomException(
+                    String.format("Error updating product: %s", e.getMessage()), e);
         }
 
         LOGGER.info("[ProductService] - Product with ID: {} was updated successfully.", productId);
@@ -86,7 +87,7 @@ public class ProductService implements ProductUsecase {
     public void deleteProduct(Integer productId) {
         Product entity = repository.findById(productId).
                 orElseThrow(() -> new ProductNotFoundException(
-                        String.format("Unable to get product with ID %s for update.", productId)));
+                        String.format("Unable to get product with ID %s.", productId)));
 
         repository.delete(entity);
 

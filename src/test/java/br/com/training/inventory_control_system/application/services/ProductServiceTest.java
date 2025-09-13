@@ -3,7 +3,7 @@ package br.com.training.inventory_control_system.application.services;
 import br.com.training.inventory_control_system.adapter.in.requests.ProductRequest;
 import br.com.training.inventory_control_system.adapter.out.mappers.ProductMapper;
 import br.com.training.inventory_control_system.adapter.out.responses.GetProductResponse;
-import br.com.training.inventory_control_system.application.exception.product.ProductCustomException;
+import br.com.training.inventory_control_system.application.exception.GeneralCustomException;
 import br.com.training.inventory_control_system.application.exception.product.ProductNotFoundException;
 import br.com.training.inventory_control_system.domain.entities.Product;
 import br.com.training.inventory_control_system.domain.repositories.ProductRepository;
@@ -13,11 +13,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -65,7 +65,7 @@ class ProductServiceTest {
         when(mapper.toEntity(productRequest)).thenReturn(product);
         doThrow(new RuntimeException("Error")).when(repository).save(any(Product.class));
 
-        ProductCustomException exception = assertThrows(ProductCustomException.class, () -> {
+        GeneralCustomException exception = assertThrows(GeneralCustomException.class, () -> {
             productService.saveProduct(productRequest);
         });
 
@@ -93,7 +93,7 @@ class ProductServiceTest {
             productService.getProduct(1);
         });
 
-        assertEquals("Unable to get product with ID: 1", exception.getMessage());
+        assertEquals("Unable to get product with ID 1.", exception.getMessage());
         verify(repository, times(1)).findProductWithCategory(1);
     }
 
@@ -114,7 +114,7 @@ class ProductServiceTest {
     void testGetProductsThrowsException() {
         when(repository.findAll()).thenThrow(new RuntimeException("Error"));
 
-        ProductCustomException exception = assertThrows(ProductCustomException.class, () -> {
+        EmptyResultDataAccessException exception = assertThrows(EmptyResultDataAccessException.class, () -> {
             productService.getProducts();
         });
 
@@ -139,11 +139,11 @@ class ProductServiceTest {
     void testUpdateProductThrowsNotFoundException() {
         when(repository.findById(1)).thenReturn(Optional.empty());
 
-        ProductCustomException exception = assertThrows(ProductCustomException.class, () -> {
+        GeneralCustomException exception = assertThrows(GeneralCustomException.class, () -> {
             productService.updateProduct(1, productRequest);
         });
 
-        assertEquals("Unable to update product: Unable to get product with ID 1 for update.", exception.getMessage());
+        assertEquals("Error updating product: Unable to get product with ID 1.", exception.getMessage());
         verify(repository, times(1)).findById(1);
     }
 
@@ -166,7 +166,7 @@ class ProductServiceTest {
             productService.deleteProduct(1);
         });
 
-        assertEquals("Unable to get product with ID 1 for update.", exception.getMessage());
+        assertEquals("Unable to get product with ID 1.", exception.getMessage());
         verify(repository, times(1)).findById(1);
     }
 }

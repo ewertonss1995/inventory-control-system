@@ -3,13 +3,14 @@ package br.com.training.inventory_control_system.application.services;
 import br.com.training.inventory_control_system.adapter.in.requests.CategoryRequest;
 import br.com.training.inventory_control_system.adapter.out.mappers.CategoryMapper;
 import br.com.training.inventory_control_system.adapter.out.responses.GetCategoryResponse;
-import br.com.training.inventory_control_system.application.exception.category.CategoryCustomException;
+import br.com.training.inventory_control_system.application.exception.GeneralCustomException;
 import br.com.training.inventory_control_system.application.exception.category.CategoryNotFoundException;
 import br.com.training.inventory_control_system.domain.entities.Category;
 import br.com.training.inventory_control_system.domain.repositories.CategoryRepository;
 import br.com.training.inventory_control_system.port.in.CategoryUsecase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -34,7 +35,7 @@ public class CategoryService implements CategoryUsecase {
             repository.save(entity);
         } catch (Exception e) {
             LOGGER.error("[CategoryService] - Unexpected error posting category: {}", e.getMessage());
-            throw new CategoryCustomException(
+            throw new GeneralCustomException(
                     String.format("Unable to save category: %s", e.getMessage()), e);
         }
     }
@@ -56,8 +57,8 @@ public class CategoryService implements CategoryUsecase {
 
         } catch (Exception e) {
             LOGGER.error("[CategoryService] - Unexpected error retrieving categories: {}", e.getMessage());
-            throw new CategoryCustomException(
-                    String.format("Unable to get categories: %s", e.getMessage()), e);
+            throw new EmptyResultDataAccessException(
+                    String.format("Unable to get categories: %s", e.getMessage()), 1);
         }
     }
 
@@ -75,7 +76,7 @@ public class CategoryService implements CategoryUsecase {
 
         } catch (Exception e) {
             LOGGER.error("[CategoryService] - Unexpected error updating categories: {}", e.getMessage());
-            throw new CategoryCustomException(
+            throw new GeneralCustomException(
                     String.format("Unable to update category: %s", e.getMessage()), e);
         }
 

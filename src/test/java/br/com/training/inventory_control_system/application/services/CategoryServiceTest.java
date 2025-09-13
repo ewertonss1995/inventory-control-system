@@ -3,7 +3,7 @@ package br.com.training.inventory_control_system.application.services;
 import br.com.training.inventory_control_system.adapter.in.requests.CategoryRequest;
 import br.com.training.inventory_control_system.adapter.out.mappers.CategoryMapper;
 import br.com.training.inventory_control_system.adapter.out.responses.GetCategoryResponse;
-import br.com.training.inventory_control_system.application.exception.category.CategoryCustomException;
+import br.com.training.inventory_control_system.application.exception.GeneralCustomException;
 import br.com.training.inventory_control_system.application.exception.category.CategoryNotFoundException;
 import br.com.training.inventory_control_system.domain.entities.Category;
 import br.com.training.inventory_control_system.domain.repositories.CategoryRepository;
@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.Collections;
 import java.util.List;
@@ -57,7 +58,7 @@ class CategoryServiceTest {
         when(mapper.toEntity(categoryRequest)).thenReturn(category);
         doThrow(new RuntimeException("Error")).when(repository).save(any(Category.class));
 
-        CategoryCustomException exception = assertThrows(CategoryCustomException.class, () -> {
+        GeneralCustomException exception = assertThrows(GeneralCustomException.class, () -> {
             categoryService.saveCategory(categoryRequest);
         });
 
@@ -104,9 +105,9 @@ class CategoryServiceTest {
 
     @Test
     void testGetCategorysThrowsException() {
-        when(repository.findAll()).thenThrow(new RuntimeException("Error"));
+        when(repository.findAll()).thenThrow(new EmptyResultDataAccessException("Error", 1));
 
-        CategoryCustomException exception = assertThrows(CategoryCustomException.class, () -> {
+        EmptyResultDataAccessException exception = assertThrows(EmptyResultDataAccessException.class, () -> {
             categoryService.getCategories();
         });
 
@@ -131,7 +132,7 @@ class CategoryServiceTest {
     void testUpdateCategoryThrowsNotFoundException() {
         when(repository.findById(1)).thenReturn(Optional.empty());
 
-        CategoryCustomException exception = assertThrows(CategoryCustomException.class, () -> {
+        GeneralCustomException exception = assertThrows(GeneralCustomException.class, () -> {
             categoryService.updateCategory(1, categoryRequest);
         });
 
