@@ -44,7 +44,7 @@ public class CategoryService implements CategoryUsecase {
     public GetCategoryResponse getCategory(Integer categoryId) {
         Category entity = repository.findById(categoryId).
                 orElseThrow(() -> new CategoryNotFoundException(
-                        String.format("Unable to get category with ID: %s", categoryId)));
+                        String.format("Category with ID: %s was not found.", categoryId)));
 
         return mapper.toGetCategoryResponse(entity);
     }
@@ -67,7 +67,7 @@ public class CategoryService implements CategoryUsecase {
         try {
             Category entity = repository.findById(categoryId).
                     orElseThrow(() -> new CategoryNotFoundException(
-                            String.format("Unable to get category with ID %s for update.", categoryId)));
+                            String.format("Category with ID %s was not found.", categoryId)));
 
             mapper.updateEntityFromRequest(request, entity);
 
@@ -87,7 +87,7 @@ public class CategoryService implements CategoryUsecase {
     public void deleteCategory(Integer categoryId) {
         Category entity = repository.findById(categoryId).
                 orElseThrow(() -> new CategoryNotFoundException(
-                        String.format("Unable to get category with ID %s for update.", categoryId)));
+                        String.format("Category with ID %s was not found.", categoryId)));
 
         repository.delete(entity);
 

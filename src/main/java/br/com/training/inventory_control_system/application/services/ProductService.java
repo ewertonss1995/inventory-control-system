@@ -44,7 +44,7 @@ public class ProductService implements ProductUsecase {
     public GetProductResponse getProduct(Integer productId) {
         Product entity = repository.findProductWithCategory(productId).
                 orElseThrow(() -> new ProductNotFoundException(
-                        String.format("Unable to get product with ID %s.", productId)));
+                        String.format("Product with ID %s was not found.", productId)));
 
         return mapper.toGetProductResponse(entity);
     }
@@ -58,7 +58,7 @@ public class ProductService implements ProductUsecase {
         } catch (Exception e) {
             LOGGER.error("[ProductService] - Unexpected error retrieving products: {}", e.getMessage());
             throw new EmptyResultDataAccessException(
-                    String.format("Unable to get products: %s", e.getMessage()), 1);
+                    String.format("Unable to update products: %s", e.getMessage()), 1);
         }
     }
 
@@ -67,7 +67,7 @@ public class ProductService implements ProductUsecase {
         try {
             Product entity = repository.findById(productId).
                     orElseThrow(() -> new ProductNotFoundException(
-                            String.format("Unable to get product with ID %s.", productId)));
+                            String.format("Product with ID %s was not found.", productId)));
 
             mapper.updateEntityFromRequest(request, entity);
 
@@ -87,7 +87,7 @@ public class ProductService implements ProductUsecase {
     public void deleteProduct(Integer productId) {
         Product entity = repository.findById(productId).
                 orElseThrow(() -> new ProductNotFoundException(
-                        String.format("Unable to get product with ID %s.", productId)));
+                        String.format("Product with ID %s was not found.", productId)));
 
         repository.delete(entity);
 

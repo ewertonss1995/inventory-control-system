@@ -93,7 +93,7 @@ class ProductServiceTest {
             productService.getProduct(1);
         });
 
-        assertEquals("Unable to get product with ID 1.", exception.getMessage());
+        assertEquals("Product with ID 1 was not found.", exception.getMessage());
         verify(repository, times(1)).findProductWithCategory(1);
     }
 
@@ -118,7 +118,7 @@ class ProductServiceTest {
             productService.getProducts();
         });
 
-        assertEquals("Unable to get products: Error", exception.getMessage());
+        assertEquals("Unable to update products: Error", exception.getMessage());
         verify(repository, times(1)).findAll();
     }
 
@@ -143,7 +143,7 @@ class ProductServiceTest {
             productService.updateProduct(1, productRequest);
         });
 
-        assertEquals("Error updating product: Unable to get product with ID 1.", exception.getMessage());
+        assertEquals("Error updating product: Product with ID 1 was not found.", exception.getMessage());
         verify(repository, times(1)).findById(1);
     }
 
@@ -166,7 +166,7 @@ class ProductServiceTest {
             productService.deleteProduct(1);
         });
 
-        assertEquals("Unable to get product with ID 1.", exception.getMessage());
+        assertEquals("Product with ID 1 was not found.", exception.getMessage());
         verify(repository, times(1)).findById(1);
     }
 }

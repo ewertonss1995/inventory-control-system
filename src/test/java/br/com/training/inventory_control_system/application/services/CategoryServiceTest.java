@@ -86,7 +86,7 @@ class CategoryServiceTest {
             categoryService.getCategory(1);
         });
 
-        assertEquals("Unable to get category with ID: 1", exception.getMessage());
+        assertEquals("Category with ID: 1 was not found.", exception.getMessage());
         verify(repository, times(1)).findById(1);
     }
 
@@ -136,7 +136,7 @@ class CategoryServiceTest {
             categoryService.updateCategory(1, categoryRequest);
         });
 
-        assertEquals("Unable to update category: Unable to get category with ID 1 for update.", exception.getMessage());
+        assertEquals("Unable to update category: Category with ID 1 was not found.", exception.getMessage());
         verify(repository, times(1)).findById(1);
     }
 
@@ -159,7 +159,7 @@ class CategoryServiceTest {
             categoryService.deleteCategory(1);
         });
 
-        assertEquals("Unable to get category with ID 1 for update.", exception.getMessage());
+        assertEquals("Category with ID 1 was not found.", exception.getMessage());
         verify(repository, times(1)).findById(1);
     }
 }
