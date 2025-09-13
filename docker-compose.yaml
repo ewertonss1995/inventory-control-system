@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_container
+    environment:
+      POSTGRES_DB: inventorycontroldb
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: abc123.A
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Script SQL para criar tabelas
+
+volumes:
+  db_data:
