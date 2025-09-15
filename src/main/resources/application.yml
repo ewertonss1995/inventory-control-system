@@ -21,3 +21,8 @@
       locations: classpath:db/migration
       baseline-on-migrate: true
       baseline-version: 1.0
+    jwt:
+      public:
+        key: classpath:app.pub
+      private:
+        key: classpath:app.key
