@@ -7,7 +7,7 @@ import br.com.training.inventory_control_system.application.exception.GeneralCus
 import br.com.training.inventory_control_system.application.exception.product.ProductNotFoundException;
 import br.com.training.inventory_control_system.domain.entities.Product;
 import br.com.training.inventory_control_system.domain.repositories.ProductRepository;
-import br.com.training.inventory_control_system.port.in.ProductUsecase;
+import br.com.training.inventory_control_system.port.in.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -17,13 +17,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class ProductService implements ProductUsecase {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
+public class ProductServiceImpl implements ProductService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     private final ProductRepository repository;
     private final ProductMapper mapper;
 
-    public ProductService(ProductRepository repository, ProductMapper mapper) {
+    public ProductServiceImpl(ProductRepository repository, ProductMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;
     }
@@ -34,7 +34,7 @@ public class ProductService implements ProductUsecase {
             Product entity = mapper.toEntity(request);
             repository.save(entity);
         } catch (Exception e) {
-            LOGGER.error("[ProductService] - Unexpected error posting product: {}", e.getMessage());
+            LOGGER.error("[ProductServiceImpl] - Unexpected error posting product: {}", e.getMessage());
             throw new GeneralCustomException(
                     String.format("Unable to save product: %s", e.getMessage()), e);
         }
@@ -56,7 +56,7 @@ public class ProductService implements ProductUsecase {
             return mapper.toGetProductResponseList(entities);
 
         } catch (Exception e) {
-            LOGGER.error("[ProductService] - Unexpected error retrieving products: {}", e.getMessage());
+            LOGGER.error("[ProductServiceImpl] - Unexpected error retrieving products: {}", e.getMessage());
             throw new EmptyResultDataAccessException(
                     String.format("Unable to update products: %s", e.getMessage()), 1);
         }
@@ -75,12 +75,12 @@ public class ProductService implements ProductUsecase {
             repository.save(entity);
 
         } catch (Exception e) {
-            LOGGER.error("[ProductService] - Unexpected error updating products: {}", e.getMessage());
+            LOGGER.error("[ProductServiceImpl] - Unexpected error updating products: {}", e.getMessage());
             throw new GeneralCustomException(
                     String.format("Error updating product: %s", e.getMessage()), e);
         }
 
-        LOGGER.info("[ProductService] - Product with ID: {} was updated successfully.", productId);
+        LOGGER.info("[ProductServiceImpl] - Product with ID: {} was updated successfully.", productId);
     }
 
     @Override
@@ -91,6 +91,6 @@ public class ProductService implements ProductUsecase {
 
         repository.delete(entity);
 
-        LOGGER.info("[ProductService] - Product with ID: {} was deleted successfully.", productId);
+        LOGGER.info("[ProductServiceImpl] - Product with ID: {} was deleted successfully.", productId);
     }
 }

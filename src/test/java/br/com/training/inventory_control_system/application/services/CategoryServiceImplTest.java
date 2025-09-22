@@ -24,7 +24,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class CategoryServiceTest {
+class CategoryServiceImplTest {
 
     @Mock
     private CategoryRepository repository;
@@ -33,7 +33,7 @@ class CategoryServiceTest {
     private CategoryMapper mapper;
 
     @InjectMocks
-    private CategoryService categoryService;
+    private CategoryServiceImpl categoryServiceImpl;
 
     private CategoryRequest categoryRequest;
     private Category category;
@@ -49,7 +49,7 @@ class CategoryServiceTest {
     @Test
     void testSaveCategory() {
         when(mapper.toEntity(categoryRequest)).thenReturn(category);
-        categoryService.saveCategory(categoryRequest);
+        categoryServiceImpl.saveCategory(categoryRequest);
         verify(repository, times(1)).save(category);
     }
 
@@ -59,7 +59,7 @@ class CategoryServiceTest {
         doThrow(new RuntimeException("Error")).when(repository).save(any(Category.class));
 
         GeneralCustomException exception = assertThrows(GeneralCustomException.class, () -> {
-            categoryService.saveCategory(categoryRequest);
+            categoryServiceImpl.saveCategory(categoryRequest);
         });
 
         assertEquals("Unable to save category: Error", exception.getMessage());
@@ -71,7 +71,7 @@ class CategoryServiceTest {
         when(repository.findById(1)).thenReturn(Optional.of(category));
         when(mapper.toGetCategoryResponse(category)).thenReturn(categoryResponse);
 
-        GetCategoryResponse response = categoryService.getCategory(1);
+        GetCategoryResponse response = categoryServiceImpl.getCategory(1);
 
         assertEquals(categoryResponse, response);
         verify(repository, times(1)).findById(1);
@@ -83,7 +83,7 @@ class CategoryServiceTest {
         when(repository.findById(1)).thenReturn(Optional.empty());
 
         CategoryNotFoundException exception = assertThrows(CategoryNotFoundException.class, () -> {
-            categoryService.getCategory(1);
+            categoryServiceImpl.getCategory(1);
         });
 
         assertEquals("Category with ID: 1 was not found.", exception.getMessage());
@@ -95,7 +95,7 @@ class CategoryServiceTest {
         when(repository.findAll()).thenReturn(Collections.singletonList(category));
         when(mapper.toGetCategoryResponseList(anyList())).thenReturn(Collections.singletonList(categoryResponse));
 
-        List<GetCategoryResponse> response = categoryService.getCategories();
+        List<GetCategoryResponse> response = categoryServiceImpl.getCategories();
 
         assertFalse(response.isEmpty());
         assertEquals(1, response.size());
@@ -108,7 +108,7 @@ class CategoryServiceTest {
         when(repository.findAll()).thenThrow(new EmptyResultDataAccessException("Error", 1));
 
         EmptyResultDataAccessException exception = assertThrows(EmptyResultDataAccessException.class, () -> {
-            categoryService.getCategories();
+            categoryServiceImpl.getCategories();
         });
 
         assertEquals("Unable to get categories: Error", exception.getMessage());
@@ -121,7 +121,7 @@ class CategoryServiceTest {
         doNothing().when(mapper).updateEntityFromRequest(categoryRequest, category);
         when(repository.save(category)).thenReturn(category);
 
-        categoryService.updateCategory(1, categoryRequest);
+        categoryServiceImpl.updateCategory(1, categoryRequest);
 
         verify(repository, times(1)).findById(1);
         verify(mapper, times(1)).updateEntityFromRequest(categoryRequest, category);
@@ -133,7 +133,7 @@ class CategoryServiceTest {
         when(repository.findById(1)).thenReturn(Optional.empty());
 
         GeneralCustomException exception = assertThrows(GeneralCustomException.class, () -> {
-            categoryService.updateCategory(1, categoryRequest);
+            categoryServiceImpl.updateCategory(1, categoryRequest);
         });
 
         assertEquals("Unable to update category: Category with ID 1 was not found.", exception.getMessage());
@@ -145,7 +145,7 @@ class CategoryServiceTest {
         when(repository.findById(1)).thenReturn(Optional.of(category));
         doNothing().when(repository).delete(category);
 
-        categoryService.deleteCategory(1);
+        categoryServiceImpl.deleteCategory(1);
 
         verify(repository, times(1)).findById(1);
         verify(repository, times(1)).delete(category);
@@ -156,7 +156,7 @@ class CategoryServiceTest {
         when(repository.findById(1)).thenReturn(Optional.empty());
 
         CategoryNotFoundException exception = assertThrows(CategoryNotFoundException.class, () -> {
-            categoryService.deleteCategory(1);
+            categoryServiceImpl.deleteCategory(1);
         });
 
         assertEquals("Category with ID 1 was not found.", exception.getMessage());

@@ -7,7 +7,7 @@ import br.com.training.inventory_control_system.application.exception.GeneralCus
 import br.com.training.inventory_control_system.application.exception.category.CategoryNotFoundException;
 import br.com.training.inventory_control_system.domain.entities.Category;
 import br.com.training.inventory_control_system.domain.repositories.CategoryRepository;
-import br.com.training.inventory_control_system.port.in.CategoryUsecase;
+import br.com.training.inventory_control_system.port.in.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -17,13 +17,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class CategoryService implements CategoryUsecase {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CategoryService.class);
+public class CategoryServiceImpl implements CategoryService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     private final CategoryRepository repository;
     private final CategoryMapper mapper;
 
-    public CategoryService(CategoryRepository repository, CategoryMapper mapper) {
+    public CategoryServiceImpl(CategoryRepository repository, CategoryMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;
     }
@@ -34,7 +34,7 @@ public class CategoryService implements CategoryUsecase {
             Category entity = mapper.toEntity(request);
             repository.save(entity);
         } catch (Exception e) {
-            LOGGER.error("[CategoryService] - Unexpected error posting category: {}", e.getMessage());
+            LOGGER.error("[CategoryServiceImpl] - Unexpected error posting category: {}", e.getMessage());
             throw new GeneralCustomException(
                     String.format("Unable to save category: %s", e.getMessage()), e);
         }
@@ -56,7 +56,7 @@ public class CategoryService implements CategoryUsecase {
             return mapper.toGetCategoryResponseList(entities);
 
         } catch (Exception e) {
-            LOGGER.error("[CategoryService] - Unexpected error retrieving categories: {}", e.getMessage());
+            LOGGER.error("[CategoryServiceImpl] - Unexpected error retrieving categories: {}", e.getMessage());
             throw new EmptyResultDataAccessException(
                     String.format("Unable to get categories: %s", e.getMessage()), 1);
         }
@@ -75,12 +75,12 @@ public class CategoryService implements CategoryUsecase {
             repository.save(entity);
 
         } catch (Exception e) {
-            LOGGER.error("[CategoryService] - Unexpected error updating categories: {}", e.getMessage());
+            LOGGER.error("[CategoryServiceImpl] - Unexpected error updating categories: {}", e.getMessage());
             throw new GeneralCustomException(
                     String.format("Unable to update category: %s", e.getMessage()), e);
         }
 
-        LOGGER.info("[CategoryService] - Category with ID: {} was updated successfully.", categoryId);
+        LOGGER.info("[CategoryServiceImpl] - Category with ID: {} was updated successfully.", categoryId);
     }
 
     @Override
@@ -91,6 +91,6 @@ public class CategoryService implements CategoryUsecase {
 
         repository.delete(entity);
 
-        LOGGER.info("[CategoryService] - Category with ID: {} was deleted successfully.", categoryId);
+        LOGGER.info("[CategoryServiceImpl] - Category with ID: {} was deleted successfully.", categoryId);
     }
 }

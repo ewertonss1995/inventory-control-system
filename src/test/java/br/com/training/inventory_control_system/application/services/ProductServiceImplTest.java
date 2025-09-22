@@ -31,7 +31,7 @@ import static org.mockito.Mockito.anyList;
 import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
-class ProductServiceTest {
+class ProductServiceImplTest {
 
     @Mock
     private ProductRepository repository;
@@ -40,7 +40,7 @@ class ProductServiceTest {
     private ProductMapper mapper;
 
     @InjectMocks
-    private ProductService productService;
+    private ProductServiceImpl productServiceImpl;
 
     private ProductRequest productRequest;
     private Product product;
@@ -56,7 +56,7 @@ class ProductServiceTest {
     @Test
     void testSaveProduct() {
         when(mapper.toEntity(productRequest)).thenReturn(product);
-        productService.saveProduct(productRequest);
+        productServiceImpl.saveProduct(productRequest);
         verify(repository, times(1)).save(product);
     }
 
@@ -66,7 +66,7 @@ class ProductServiceTest {
         doThrow(new RuntimeException("Error")).when(repository).save(any(Product.class));
 
         GeneralCustomException exception = assertThrows(GeneralCustomException.class, () -> {
-            productService.saveProduct(productRequest);
+            productServiceImpl.saveProduct(productRequest);
         });
 
         assertEquals("Unable to save product: Error", exception.getMessage());
@@ -78,7 +78,7 @@ class ProductServiceTest {
         when(repository.findProductWithCategory(1)).thenReturn(Optional.of(product));
         when(mapper.toGetProductResponse(product)).thenReturn(productResponse);
 
-        GetProductResponse response = productService.getProduct(1);
+        GetProductResponse response = productServiceImpl.getProduct(1);
 
         assertEquals(productResponse, response);
         verify(repository, times(1)).findProductWithCategory(1);
@@ -90,7 +90,7 @@ class ProductServiceTest {
         when(repository.findProductWithCategory(1)).thenReturn(Optional.empty());
 
         ProductNotFoundException exception = assertThrows(ProductNotFoundException.class, () -> {
-            productService.getProduct(1);
+            productServiceImpl.getProduct(1);
         });
 
         assertEquals("Product with ID 1 was not found.", exception.getMessage());
@@ -102,7 +102,7 @@ class ProductServiceTest {
         when(repository.findAll()).thenReturn(Collections.singletonList(product));
         when(mapper.toGetProductResponseList(anyList())).thenReturn(Collections.singletonList(productResponse));
 
-        List<GetProductResponse> response = productService.getProducts();
+        List<GetProductResponse> response = productServiceImpl.getProducts();
 
         assertFalse(response.isEmpty());
         assertEquals(1, response.size());
@@ -115,7 +115,7 @@ class ProductServiceTest {
         when(repository.findAll()).thenThrow(new RuntimeException("Error"));
 
         EmptyResultDataAccessException exception = assertThrows(EmptyResultDataAccessException.class, () -> {
-            productService.getProducts();
+            productServiceImpl.getProducts();
         });
 
         assertEquals("Unable to update products: Error", exception.getMessage());
@@ -128,7 +128,7 @@ class ProductServiceTest {
         doNothing().when(mapper).updateEntityFromRequest(productRequest, product);
         when(repository.save(product)).thenReturn(product);
 
-        productService.updateProduct(1, productRequest);
+        productServiceImpl.updateProduct(1, productRequest);
 
         verify(repository, times(1)).findById(1);
         verify(mapper, times(1)).updateEntityFromRequest(productRequest, product);
@@ -140,7 +140,7 @@ class ProductServiceTest {
         when(repository.findById(1)).thenReturn(Optional.empty());
 
         GeneralCustomException exception = assertThrows(GeneralCustomException.class, () -> {
-            productService.updateProduct(1, productRequest);
+            productServiceImpl.updateProduct(1, productRequest);
         });
 
         assertEquals("Error updating product: Product with ID 1 was not found.", exception.getMessage());
@@ -152,7 +152,7 @@ class ProductServiceTest {
         when(repository.findById(1)).thenReturn(Optional.of(product));
         doNothing().when(repository).delete(product);
 
-        productService.deleteProduct(1);
+        productServiceImpl.deleteProduct(1);
 
         verify(repository, times(1)).findById(1);
         verify(repository, times(1)).delete(product);
@@ -163,7 +163,7 @@ class ProductServiceTest {
         when(repository.findById(1)).thenReturn(Optional.empty());
 
         ProductNotFoundException exception = assertThrows(ProductNotFoundException.class, () -> {
-            productService.deleteProduct(1);
+            productServiceImpl.deleteProduct(1);
         });
 
         assertEquals("Product with ID 1 was not found.", exception.getMessage());

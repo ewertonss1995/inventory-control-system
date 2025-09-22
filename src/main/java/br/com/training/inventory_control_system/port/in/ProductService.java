@@ -5,7 +5,7 @@ import br.com.training.inventory_control_system.adapter.out.responses.GetProduct
 
 import java.util.List;
 
-public interface ProductUsecase {
+public interface ProductService {
     void saveProduct(ProductRequest request);
     GetProductResponse getProduct(Integer productId);
     List<GetProductResponse> getProducts();

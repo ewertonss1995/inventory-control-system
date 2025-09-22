@@ -13,14 +13,11 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
 
-//    @Mapping(target = "categotyId", ignore = true)
     Category toEntity(CategoryRequest request);
 
     GetCategoryResponse toGetCategoryResponse(Category entity);
 
     List<GetCategoryResponse> toGetCategoryResponseList(List<Category> entities);
 
-//    @Mapping(target = "registrationDate", ignore = true)
-//    @Mapping(target = "category.categoryId", source = "categoryId")
     void updateEntityFromRequest(CategoryRequest request, @MappingTarget Category entity);
 }
