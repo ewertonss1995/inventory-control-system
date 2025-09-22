@@ -1,6 +1,6 @@
 package br.com.training.inventory_control_system.adapter.out.mappers;
 
-import br.com.training.inventory_control_system.adapter.in.requests.ProductRequest;
+import br.com.training.inventory_control_system.adapter.in.controllers.product.request.ProductRequest;
 import br.com.training.inventory_control_system.adapter.out.responses.GetProductResponse;
 import br.com.training.inventory_control_system.domain.entities.Product;
 import org.mapstruct.Mapper;

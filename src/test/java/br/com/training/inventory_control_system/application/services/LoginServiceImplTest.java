@@ -1,6 +1,6 @@
 package br.com.training.inventory_control_system.application.services;
 
-import br.com.training.inventory_control_system.adapter.in.requests.LoginRequest;
+import br.com.training.inventory_control_system.adapter.in.controllers.login.request.LoginRequest;
 import br.com.training.inventory_control_system.domain.entities.User;
 import br.com.training.inventory_control_system.domain.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;

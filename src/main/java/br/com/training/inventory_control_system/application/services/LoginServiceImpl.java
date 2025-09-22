@@ -1,6 +1,6 @@
 package br.com.training.inventory_control_system.application.services;
 
-import br.com.training.inventory_control_system.adapter.in.requests.LoginRequest;
+import br.com.training.inventory_control_system.adapter.in.controllers.login.request.LoginRequest;
 import br.com.training.inventory_control_system.domain.entities.Role;
 import br.com.training.inventory_control_system.domain.repositories.UserRepository;
 import br.com.training.inventory_control_system.port.in.LoginService;

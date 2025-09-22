@@ -1,4 +1,4 @@
-package br.com.training.inventory_control_system.adapter.in.requests;
+package br.com.training.inventory_control_system.adapter.in.controllers.product.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -1,6 +1,6 @@
-package br.com.training.inventory_control_system.adapter.in.controllers;
+package br.com.training.inventory_control_system.adapter.in.controllers.category.api;
 
-import br.com.training.inventory_control_system.adapter.in.requests.CategoryRequest;
+import br.com.training.inventory_control_system.adapter.in.controllers.category.request.CategoryRequest;
 import br.com.training.inventory_control_system.adapter.out.responses.ApiResponse;
 import br.com.training.inventory_control_system.adapter.out.responses.GetCategoryResponse;
 import br.com.training.inventory_control_system.port.in.CategoryService;
@@ -92,7 +92,7 @@ class CategoryControllerTest {
         doNothing().when(useCase).deleteCategory(1);
 
         assertDoesNotThrow(() -> {
-            categoryController.deletarRegistro(1);
+            categoryController.deleteCategory(1);
         });
 
         verify(useCase, times(1)).deleteCategory(1);

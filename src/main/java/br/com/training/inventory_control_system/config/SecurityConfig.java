@@ -39,6 +39,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v1/products").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v1/products/{productId}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v1/categories").permitAll()

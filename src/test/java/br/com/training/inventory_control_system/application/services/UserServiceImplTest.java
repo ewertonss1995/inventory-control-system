@@ -1,6 +1,6 @@
 package br.com.training.inventory_control_system.application.services;
 
-import br.com.training.inventory_control_system.adapter.in.requests.UserRequest;
+import br.com.training.inventory_control_system.adapter.in.controllers.user.request.UserRequest;
 import br.com.training.inventory_control_system.domain.entities.Role;
 import br.com.training.inventory_control_system.domain.entities.User;
 import br.com.training.inventory_control_system.domain.entities.enums.RolesEnum;

@@ -1,6 +1,6 @@
 package br.com.training.inventory_control_system.domain.entities;
 
-import br.com.training.inventory_control_system.adapter.in.requests.LoginRequest;
+import br.com.training.inventory_control_system.adapter.in.controllers.login.request.LoginRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;

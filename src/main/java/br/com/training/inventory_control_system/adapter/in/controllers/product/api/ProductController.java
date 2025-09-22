@@ -1,6 +1,6 @@
-package br.com.training.inventory_control_system.adapter.in.controllers;
+package br.com.training.inventory_control_system.adapter.in.controllers.product.api;
 
-import br.com.training.inventory_control_system.adapter.in.requests.ProductRequest;
+import br.com.training.inventory_control_system.adapter.in.controllers.product.request.ProductRequest;
 import br.com.training.inventory_control_system.adapter.out.responses.GetProductResponse;
 import br.com.training.inventory_control_system.adapter.out.responses.ApiResponse;
 import br.com.training.inventory_control_system.port.in.ProductService;

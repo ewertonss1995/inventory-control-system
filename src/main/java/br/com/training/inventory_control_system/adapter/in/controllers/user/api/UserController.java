@@ -1,6 +1,6 @@
-package br.com.training.inventory_control_system.adapter.in.controllers;
+package br.com.training.inventory_control_system.adapter.in.controllers.user.api;
 
-import br.com.training.inventory_control_system.adapter.in.requests.UserRequest;
+import br.com.training.inventory_control_system.adapter.in.controllers.user.request.UserRequest;
 import br.com.training.inventory_control_system.domain.entities.User;
 import br.com.training.inventory_control_system.port.in.UserService;
 import org.springframework.http.HttpStatus;

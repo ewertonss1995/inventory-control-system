@@ -1,6 +1,6 @@
-package br.com.training.inventory_control_system.adapter.in.controllers;
+package br.com.training.inventory_control_system.adapter.in.controllers.login.api;
 
-import br.com.training.inventory_control_system.adapter.in.requests.LoginRequest;
+import br.com.training.inventory_control_system.adapter.in.controllers.login.request.LoginRequest;
 import br.com.training.inventory_control_system.adapter.out.responses.LoginResponse;
 import br.com.training.inventory_control_system.application.services.LoginServiceImpl;
 import org.junit.jupiter.api.Test;

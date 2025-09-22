@@ -2,6 +2,7 @@ package br.com.training.inventory_control_system.adapter.exception.handle;
 
 import br.com.training.inventory_control_system.adapter.exception.response.ApiErrorResponse;
 import br.com.training.inventory_control_system.application.exception.GeneralCustomException;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
+@Hidden
 public class GlobalExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
