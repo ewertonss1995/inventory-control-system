@@ -3,7 +3,7 @@ package br.com.training.inventory_control_system.adapter.in.controllers;
 import br.com.training.inventory_control_system.adapter.in.requests.ProductRequest;
 import br.com.training.inventory_control_system.adapter.out.responses.GetProductResponse;
 import br.com.training.inventory_control_system.adapter.out.responses.ApiResponse;
-import br.com.training.inventory_control_system.port.in.ProductUsecase;
+import br.com.training.inventory_control_system.port.in.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 class ProductControllerTest {
 
     @Mock
-    private ProductUsecase useCase;
+    private ProductService useCase;
 
     @InjectMocks
     private ProductController productController;

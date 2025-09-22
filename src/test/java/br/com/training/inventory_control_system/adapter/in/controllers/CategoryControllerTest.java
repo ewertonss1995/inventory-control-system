@@ -3,7 +3,7 @@ package br.com.training.inventory_control_system.adapter.in.controllers;
 import br.com.training.inventory_control_system.adapter.in.requests.CategoryRequest;
 import br.com.training.inventory_control_system.adapter.out.responses.ApiResponse;
 import br.com.training.inventory_control_system.adapter.out.responses.GetCategoryResponse;
-import br.com.training.inventory_control_system.port.in.CategoryUsecase;
+import br.com.training.inventory_control_system.port.in.CategoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 class CategoryControllerTest {
 
     @Mock
-    private CategoryUsecase useCase;
+    private CategoryService useCase;
 
     @InjectMocks
     private CategoryController categoryController;

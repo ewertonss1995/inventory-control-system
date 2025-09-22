@@ -3,7 +3,7 @@ package br.com.training.inventory_control_system.adapter.in.controllers;
 import br.com.training.inventory_control_system.adapter.in.requests.ProductRequest;
 import br.com.training.inventory_control_system.adapter.out.responses.GetProductResponse;
 import br.com.training.inventory_control_system.adapter.out.responses.ApiResponse;
-import br.com.training.inventory_control_system.port.in.ProductUsecase;
+import br.com.training.inventory_control_system.port.in.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -31,17 +31,17 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class ProductController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
-    private final ProductUsecase useCase;
+    private final ProductService productService;
 
-    public ProductController(ProductUsecase useCase) {
-        this.useCase = useCase;
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
     @PostMapping
     public ResponseEntity<ApiResponse> saveProduct(@RequestBody @Valid ProductRequest request) {
         LOGGER.info(LOG_PRODUCT_SAVE_OPERATION, request.getProductName());
 
-        useCase.saveProduct(request);
+        productService.saveProduct(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.builder()
@@ -56,7 +56,7 @@ public class ProductController {
         LOGGER.info(LOG_PRODUCT_RECOVERY_OPERATION, productId);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(useCase.getProduct(productId));
+                .body(productService.getProduct(productId));
     }
 
     @GetMapping
@@ -64,14 +64,14 @@ public class ProductController {
         LOGGER.info(LOG_PRODUCTS_RECOVERY_OPERATION);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(useCase.getProducts());
+                .body(productService.getProducts());
     }
 
     @PutMapping("/{productId}")
     public ResponseEntity<ApiResponse> updateProduct(@PathVariable Integer productId, @RequestBody @Valid ProductRequest request) {
         LOGGER.info(LOG_PRODUCT_UPDATE_OPERATION, productId);
 
-        useCase.updateProduct(productId, request);
+        productService.updateProduct(productId, request);
 
         return ResponseEntity.ok(ApiResponse.builder()
                 .message(String.format("Product with ID %s was updated successfully.", productId))
@@ -83,6 +83,6 @@ public class ProductController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deletarRegistro(@PathVariable Integer productId) {
         LOGGER.info(LOG_PRODUCT_DELETE_OPERATION, productId);
-        useCase.deleteProduct(productId);
+        productService.deleteProduct(productId);
     }
 }

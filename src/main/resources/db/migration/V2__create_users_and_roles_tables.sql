@@ -6,7 +6,7 @@ VALUES
 
 CREATE TABLE IF NOT EXISTS roles (
     role_id SERIAL PRIMARY KEY,
-    role_name VARCHAR(255) NOT NULL UNIQUE
+    role_name VARCHAR(255) UNIQUE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS users (
@@ -23,5 +23,5 @@ CREATE TABLE IF NOT EXISTS users_roles (
 
 INSERT INTO roles (role_id, role_name)
 VALUES
-    (1, 'admin'),
-    (2, 'basic') ON CONFLICT (role_name) DO NOTHING;
+    (1, 'ADMIN'),
+    (2, 'BASIC') ON CONFLICT (role_name) DO NOTHING;

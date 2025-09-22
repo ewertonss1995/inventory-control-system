@@ -5,7 +5,7 @@ import br.com.training.inventory_control_system.adapter.out.responses.GetCategor
 
 import java.util.List;
 
-public interface CategoryUsecase {
+public interface CategoryService {
     void saveCategory(CategoryRequest request);
     GetCategoryResponse getCategory(Integer categoryId);
     List<GetCategoryResponse> getCategories();
