@@ -1,6 +1,8 @@
 package br.com.training.inventory_control_system.application.services;
 
 import br.com.training.inventory_control_system.adapter.in.controllers.user.request.UserRequest;
+import br.com.training.inventory_control_system.adapter.out.mappers.UserMapper;
+import br.com.training.inventory_control_system.adapter.out.responses.UserResponse;
 import br.com.training.inventory_control_system.domain.entities.Role;
 import br.com.training.inventory_control_system.domain.entities.User;
 import br.com.training.inventory_control_system.domain.entities.enums.RolesEnum;
@@ -29,6 +31,8 @@ import static br.com.training.inventory_control_system.mocks.RoleMock.getRoleBas
 import static br.com.training.inventory_control_system.mocks.RoleMock.getRoleListMock;
 import static br.com.training.inventory_control_system.mocks.UserMock.getUserMock;
 import static br.com.training.inventory_control_system.mocks.UserMock.getUserRequestMock;
+import static br.com.training.inventory_control_system.mocks.UserMock.getUserListMock;
+import static br.com.training.inventory_control_system.mocks.UserMock.getUserResponseListMock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -47,6 +51,9 @@ class UserServiceImplTest {
     private RoleRepository roleRepository;
 
     @Mock
+    private UserMapper userMapper;
+
+    @Mock
     private JwtEncoder jwtEncoder;
 
     @Mock
@@ -60,6 +67,8 @@ class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userServiceImpl;
 
+    private List<User> userListMock;
+    private List<UserResponse> userResponseListMock;
     private UserRequest userRequest;
     private User userMock;
     private Role basicRoleMock;
@@ -71,6 +80,8 @@ class UserServiceImplTest {
         userMock = getUserMock();
         basicRoleMock = getRoleBasic();
         adminRoleMock = getRoleAdmin();
+        userListMock = getUserListMock();
+        userResponseListMock = getUserResponseListMock();
     }
 
     @Test
@@ -125,6 +136,7 @@ class UserServiceImplTest {
     void testCreateUserWhenUserDoesNotExistThenCreateUser() {
         when(userRepository.findByUserName(userRequest.userName())).thenReturn(Optional.empty());
         when(roleRepository.findByName(RolesEnum.BASIC.name())).thenReturn(basicRoleMock);
+        when(userMapper.toEntity(userRequest)).thenReturn(userMock);
         when(bCryptPasswordEncoder.encode(anyString())).thenReturn("encodedPassword");
 
         userServiceImpl.createUser(userRequest);
@@ -143,6 +155,9 @@ class UserServiceImplTest {
         when(roleRepository.findByName(RolesEnum.ADMIN.name())).thenReturn(adminRoleMock);
         when(roleRepository.findByName(RolesEnum.BASIC.name())).thenReturn(basicRoleMock);
         when(userRepository.findByUserName("admin")).thenReturn(Optional.empty());
+
+        when(userMapper.toEntity(userRequest)).thenReturn(userMock);
+
         when(bCryptPasswordEncoder.encode(anyString())).thenReturn("encodedPassword");
 
         userServiceImpl.createAdminUser(userRequest);
@@ -152,10 +167,10 @@ class UserServiceImplTest {
 
     @Test
     void testGetUsers() {
-        List<User> users = List.of(new User(), new User());
-        when(userRepository.findAll()).thenReturn(users);
+        when(userRepository.findAll()).thenReturn(userListMock);
+        when(userMapper.toUserResponseList(userListMock)).thenReturn(userResponseListMock);
 
-        List<User> result = userServiceImpl.getUsers();
+        List<UserResponse> result = userServiceImpl.getUsers();
 
         assertEquals(2, result.size());
         verify(userRepository).findAll();

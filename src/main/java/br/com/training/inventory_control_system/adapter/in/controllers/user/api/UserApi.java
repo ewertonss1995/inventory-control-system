@@ -2,7 +2,7 @@ package br.com.training.inventory_control_system.adapter.in.controllers.user.api
 
 import br.com.training.inventory_control_system.adapter.in.controllers.user.request.UserRequest;
 import br.com.training.inventory_control_system.adapter.out.responses.UserLoginResponse;
-import br.com.training.inventory_control_system.domain.entities.User;
+import br.com.training.inventory_control_system.adapter.out.responses.UserResponse;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -42,7 +43,7 @@ public interface UserApi {
     })
     ResponseEntity<UserLoginResponse> userLogin(
             @Parameter(description = "User login request containing username and password")
-            @RequestBody UserRequest request);
+            @Valid @RequestBody UserRequest request);
 
     @Operation(summary = "Create a new user", description = "Register a new user in the system.",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -65,7 +66,7 @@ public interface UserApi {
                             )
                     ))
     })
-    void createUser(@Parameter(description = "User registration request") @RequestBody UserRequest request);
+    void createUser(@Parameter(description = "User registration request") @Valid @RequestBody UserRequest request);
 
     @Operation(summary = "Create a new admin user", description = "Register a new admin user in the system.",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -101,14 +102,14 @@ public interface UserApi {
     @Hidden
     void createAdminUser(
             @Parameter(description = "Admin user registration request")
-            @RequestBody UserRequest request);
+            @Valid  @RequestBody UserRequest request);
 
     @Operation(summary = "Get all users", description = "Retrieve a list of all users in the system.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = User.class)
+                            schema = @Schema(implementation = UserResponse.class)
                     )),
             @ApiResponse(responseCode = "403", description = "Access denied",
                     content = @Content(
@@ -120,5 +121,5 @@ public interface UserApi {
                             )
                     ))
     })
-    ResponseEntity<List<User>> getUsers();
+    ResponseEntity<List<UserResponse>> getUsers();
 }

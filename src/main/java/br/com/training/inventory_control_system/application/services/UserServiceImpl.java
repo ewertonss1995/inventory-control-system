@@ -1,6 +1,8 @@
 package br.com.training.inventory_control_system.application.services;
 
 import br.com.training.inventory_control_system.adapter.in.controllers.user.request.UserRequest;
+import br.com.training.inventory_control_system.adapter.out.mappers.UserMapper;
+import br.com.training.inventory_control_system.adapter.out.responses.UserResponse;
 import br.com.training.inventory_control_system.domain.entities.Role;
 import br.com.training.inventory_control_system.domain.entities.User;
 import br.com.training.inventory_control_system.domain.entities.enums.RolesEnum;
@@ -30,15 +32,17 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     public UserServiceImpl(JwtEncoder jwtEncoder, BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository,
                            RoleRepository roleRepository,
-                           BCryptPasswordEncoder passwordEncoder) {
+                           BCryptPasswordEncoder passwordEncoder, UserMapper userMapper) {
         this.jwtEncoder = jwtEncoder;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
     }
 
     @Transactional
@@ -78,7 +82,8 @@ public class UserServiceImpl implements UserService {
 
         var basicRole = roleRepository.findByName(RolesEnum.BASIC.name());
 
-        var user = requestToEntity(request, Set.of(basicRole));
+        var user = userMapper.toEntity(request);
+        user.setRoles(Set.of(basicRole));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userRepository.save(user);
@@ -96,22 +101,16 @@ public class UserServiceImpl implements UserService {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        var user = requestToEntity(request, Set.of(basicRole, adminRole));
+        var user = userMapper.toEntity(request);
+        user.setRoles(Set.of(basicRole, adminRole));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userRepository.save(user);
     }
 
     @Override
-    public List<User> getUsers() {
-        return userRepository.findAll();
-    }
-
-    private User requestToEntity(UserRequest request, Set<Role> roles) {
-        User user = new User();
-        user.setUserName(request.userName());
-        user.setPassword(request.password());
-        user.setRoles(roles);
-        return user;
+    public List<UserResponse> getUsers() {
+        List<User> userList = userRepository.findAll();
+        return userMapper.toUserResponseList(userList);
     }
 }
