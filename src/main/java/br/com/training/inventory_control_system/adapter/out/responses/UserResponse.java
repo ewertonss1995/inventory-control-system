@@ -9,5 +9,4 @@ public record UserResponse (
         UUID userId,
         String userName,
         Set<Role> roles
-) {
-}
+) {}

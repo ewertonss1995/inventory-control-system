@@ -3,6 +3,7 @@ package br.com.training.inventory_control_system.adapter.in.controllers.user.api
 import br.com.training.inventory_control_system.adapter.in.controllers.user.request.UserRequest;
 import br.com.training.inventory_control_system.adapter.out.responses.UserLoginResponse;
 import br.com.training.inventory_control_system.adapter.out.responses.UserResponse;
+import br.com.training.inventory_control_system.domain.entities.User;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
