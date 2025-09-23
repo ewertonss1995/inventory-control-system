@@ -3,8 +3,10 @@ package br.com.training.inventory_control_system.adapter.in.controllers.category
 import br.com.training.inventory_control_system.adapter.in.controllers.category.request.CategoryRequest;
 import br.com.training.inventory_control_system.adapter.out.responses.ApiResponse;
 import br.com.training.inventory_control_system.adapter.out.responses.GetCategoryResponse;
+import br.com.training.inventory_control_system.adapter.out.responses.GetProductResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -40,9 +42,9 @@ public interface CategoryApi {
                             content = @Content(
                                     schema = @Schema(
                                             example = "{\n" +
-                                            "    \"message\": \"The body of the request is empty or invalid. Please provide valid data.\",\n" +
-                                            "    \"status\": 404\n" +
-                                            "}")
+                                                    "    \"message\": \"The body of the request is empty or invalid. Please provide valid data.\",\n" +
+                                                    "    \"status\": 404\n" +
+                                                    "}")
                             )),
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Internal Server Error",
                             content = @Content(
@@ -100,7 +102,7 @@ public interface CategoryApi {
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Ok",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = GetCategoryResponse.class)
+                                    array = @ArraySchema(schema = @Schema(implementation = GetCategoryResponse.class))
                             )
                     ),
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Not Found",

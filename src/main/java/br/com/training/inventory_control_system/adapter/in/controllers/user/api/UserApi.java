@@ -7,6 +7,7 @@ import br.com.training.inventory_control_system.domain.entities.User;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -71,13 +72,13 @@ public interface UserApi {
 
     @Operation(summary = "Create a new admin user", description = "Register a new admin user in the system.",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "Admin user data that will be created.",
-            required = true,
-            content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = UserRequest.class)
-            )
-    ))
+                    description = "Admin user data that will be created.",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = UserRequest.class)
+                    )
+            ))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Ok"),
             @ApiResponse(responseCode = "403", description = "Access denied",
@@ -91,26 +92,26 @@ public interface UserApi {
                     )),
             @ApiResponse(responseCode = "400", description = "Bad Request",
                     content = @Content(
-                    schema = @Schema(
-                            example = "{\n" +
-                                    "    \"message\": \"The body of the request is empty or invalid. Please provide valid data.\",\n" +
-                                    "    \"status\": 400\n" +
-                                    "}"
+                            schema = @Schema(
+                                    example = "{\n" +
+                                            "    \"message\": \"The body of the request is empty or invalid. Please provide valid data.\",\n" +
+                                            "    \"status\": 400\n" +
+                                            "}"
+                            )
                     )
-            )
             )
     })
     @Hidden
     void createAdminUser(
             @Parameter(description = "Admin user registration request")
-            @Valid  @RequestBody UserRequest request);
+            @Valid @RequestBody UserRequest request);
 
     @Operation(summary = "Get all users", description = "Retrieve a list of all users in the system.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = UserResponse.class)
+                            array = @ArraySchema(schema = @Schema(implementation = UserResponse.class))
                     )),
             @ApiResponse(responseCode = "403", description = "Access denied",
                     content = @Content(
