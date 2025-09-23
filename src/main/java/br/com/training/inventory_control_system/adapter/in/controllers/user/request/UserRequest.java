@@ -1,3 +1,5 @@
 package br.com.training.inventory_control_system.adapter.in.controllers.user.request;
 
-public record UserRequest (String userName, String password) { }
+import jakarta.validation.constraints.NotBlank;
+
+public record UserRequest (@NotBlank String userName, @NotBlank String password) { }
