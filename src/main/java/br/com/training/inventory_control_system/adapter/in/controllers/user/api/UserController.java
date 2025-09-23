@@ -2,7 +2,7 @@ package br.com.training.inventory_control_system.adapter.in.controllers.user.api
 
 import br.com.training.inventory_control_system.adapter.in.controllers.user.request.UserRequest;
 import br.com.training.inventory_control_system.adapter.out.responses.UserLoginResponse;
-import br.com.training.inventory_control_system.domain.entities.User;
+import br.com.training.inventory_control_system.adapter.out.responses.UserResponse;
 import br.com.training.inventory_control_system.port.in.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -56,7 +56,8 @@ public class UserController implements UserApi {
     @Override
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
-    public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok(userService.getUsers());
+    public ResponseEntity<List<UserResponse>> getUsers() {
+        List<UserResponse> userResponseList = userService.getUsers();
+        return ResponseEntity.ok(userResponseList);
     }
 }

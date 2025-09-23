@@ -2,8 +2,8 @@ package br.com.training.inventory_control_system.adapter.in.controllers.user.api
 
 import br.com.training.inventory_control_system.adapter.in.controllers.user.request.UserRequest;
 import br.com.training.inventory_control_system.adapter.out.responses.UserLoginResponse;
+import br.com.training.inventory_control_system.adapter.out.responses.UserResponse;
 import br.com.training.inventory_control_system.application.services.UserServiceImpl;
-import br.com.training.inventory_control_system.domain.entities.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.Collections;
 import java.util.List;
 
-import static br.com.training.inventory_control_system.mocks.UserMock.getUserMock;
+import static br.com.training.inventory_control_system.mocks.UserMock.getUserResponseMock;
 import static br.com.training.inventory_control_system.mocks.UserMock.getUserRequestMock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -34,12 +34,12 @@ class UserControllerTest {
     private UserController userController;
 
     private UserRequest userRequest;
-    private User user;
+    private UserResponse userResponse;
 
     @BeforeEach
     void setUp() {
         userRequest = getUserRequestMock();
-        user = getUserMock();
+        userResponse = getUserResponseMock();
     }
 
     @Test
@@ -72,14 +72,14 @@ class UserControllerTest {
 
     @Test
     void testGetUsers() {
-        when(userServiceImpl.getUsers()).thenReturn(Collections.singletonList(user));
+        when(userServiceImpl.getUsers()).thenReturn(Collections.singletonList(userResponse));
 
-        ResponseEntity<List<User>> response = userController.getUsers();
+        ResponseEntity<List<UserResponse>> response = userController.getUsers();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(1, response.getBody().size());
-        assertEquals(user, response.getBody().get(0));
+        assertEquals(userResponse, response.getBody().get(0));
         verify(userServiceImpl, times(1)).getUsers();
     }
 }
