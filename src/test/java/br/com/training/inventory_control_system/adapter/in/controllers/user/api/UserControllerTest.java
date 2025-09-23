@@ -1,6 +1,7 @@
 package br.com.training.inventory_control_system.adapter.in.controllers.user.api;
 
 import br.com.training.inventory_control_system.adapter.in.controllers.user.request.UserRequest;
+import br.com.training.inventory_control_system.adapter.out.responses.UserLoginResponse;
 import br.com.training.inventory_control_system.application.services.UserServiceImpl;
 import br.com.training.inventory_control_system.domain.entities.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +40,22 @@ class UserControllerTest {
     void setUp() {
         userRequest = getUserRequestMock();
         user = getUserMock();
+    }
+
+    @Test
+    void testUserLogin() {
+        String expectedToken = "token";
+
+        when(userServiceImpl.userLogin(userRequest)).thenReturn(expectedToken);
+
+        ResponseEntity<UserLoginResponse> response = userController.userLogin(userRequest);
+
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedToken, response.getBody().acessToken());
+        assertEquals(300L, response.getBody().expiresIn());
+
+        verify(userServiceImpl, times(1)).userLogin(userRequest);
     }
 
     @Test

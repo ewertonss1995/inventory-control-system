@@ -28,7 +28,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping(value = "/v1/products", produces = APPLICATION_JSON_VALUE)
 @Validated
-public class ProductController {
+public class ProductController implements ProductApi {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
     private final ProductService productService;
@@ -37,6 +37,7 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @Override
     @PostMapping
     public ResponseEntity<ApiResponse> saveProduct(@RequestBody @Valid ProductRequest request) {
         LOGGER.info(LOG_PRODUCT_SAVE_OPERATION, request.getProductName());
@@ -51,6 +52,7 @@ public class ProductController {
                         .build());
     }
 
+    @Override
     @GetMapping("/{productId}")
     public ResponseEntity<GetProductResponse> getProduct(@PathVariable Integer productId) {
         LOGGER.info(LOG_PRODUCT_RECOVERY_OPERATION, productId);
@@ -59,6 +61,7 @@ public class ProductController {
                 .body(productService.getProduct(productId));
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<List<GetProductResponse>> getProducts() {
         LOGGER.info(LOG_PRODUCTS_RECOVERY_OPERATION);
@@ -67,6 +70,7 @@ public class ProductController {
                 .body(productService.getProducts());
     }
 
+    @Override
     @PutMapping("/{productId}")
     public ResponseEntity<ApiResponse> updateProduct(@PathVariable Integer productId, @RequestBody @Valid ProductRequest request) {
         LOGGER.info(LOG_PRODUCT_UPDATE_OPERATION, productId);
@@ -79,9 +83,10 @@ public class ProductController {
                 .build());
     }
 
+    @Override
     @DeleteMapping("/{productId}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deletarRegistro(@PathVariable Integer productId) {
+    public void deletarProduct(@PathVariable Integer productId) {
         LOGGER.info(LOG_PRODUCT_DELETE_OPERATION, productId);
         productService.deleteProduct(productId);
     }

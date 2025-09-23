@@ -1,8 +1,8 @@
-package br.com.training.inventory_control_system.adapter.in.controllers.category.api;
+package br.com.training.inventory_control_system.adapter.in.controllers.product.api;
 
-import br.com.training.inventory_control_system.adapter.in.controllers.category.request.CategoryRequest;
+import br.com.training.inventory_control_system.adapter.in.controllers.product.request.ProductRequest;
 import br.com.training.inventory_control_system.adapter.out.responses.ApiResponse;
-import br.com.training.inventory_control_system.adapter.out.responses.GetCategoryResponse;
+import br.com.training.inventory_control_system.adapter.out.responses.GetProductResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,17 +16,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@Tag(name = "CategoryController", description = "Operations for managing categories")
-public interface CategoryApi {
+@Tag(name = "ProductController", description = "Operations for managing products")
+public interface ProductApi {
 
-    @Operation(summary = "Creates a new category",
-            description = "Adds a new category to the system.",
+    @Operation(summary = "Creates a new product",
+            description = "Adds a new product to the system.",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "Category data that will be created.",
+                    description = "Product data that will be created.",
                     required = true,
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = CategoryRequest.class)
+                            schema = @Schema(implementation = ProductRequest.class)
                     )
             ),
             responses = {
@@ -41,7 +41,7 @@ public interface CategoryApi {
                                     schema = @Schema(
                                             example = "{\n" +
                                             "    \"message\": \"The body of the request is empty or invalid. Please provide valid data.\",\n" +
-                                            "    \"status\": 404\n" +
+                                            "    \"status\": 400\n" +
                                             "}")
                             )),
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Internal Server Error",
@@ -54,18 +54,18 @@ public interface CategoryApi {
                                     )
                             ))
             })
-    ResponseEntity<ApiResponse> saveCategory(
-            @Parameter(description = "Request to create a new category")
-            @RequestBody @Valid CategoryRequest request
+    ResponseEntity<ApiResponse> saveProduct(
+            @Parameter(description = "Request to create a new product")
+            @RequestBody @Valid ProductRequest request
     );
 
-    @Operation(summary = "Retrieves a category by ID",
-            description = "Fetches the details of a category specified by the ID.",
+    @Operation(summary = "Retrieves a product by ID",
+            description = "Fetches the details of a product specified by the ID.",
             responses = {
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Ok",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = GetCategoryResponse.class)
+                                    schema = @Schema(implementation = GetProductResponse.class)
                             )
                     ),
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Not Found",
@@ -73,7 +73,7 @@ public interface CategoryApi {
                                     mediaType = "application/json",
                                     schema = @Schema(
                                             example = "{\n" +
-                                                    "    \"message\": \"Error during execution: Category with ID 1 was not found.\",\n" +
+                                                    "    \"message\": \"Error during execution: Product with ID 1 was not found.\",\n" +
                                                     "    \"status\": 404\n" +
                                                     "}"
                                     )
@@ -89,18 +89,18 @@ public interface CategoryApi {
                                     )
                             ))
             })
-    ResponseEntity<GetCategoryResponse> getCategory(
-            @Parameter(description = "ID of the category to retrieve", required = true)
-            @PathVariable Integer categoryId
+    ResponseEntity<GetProductResponse> getProduct(
+            @Parameter(description = "ID of the product to retrieve", required = true)
+            @PathVariable Integer productId
     );
 
-    @Operation(summary = "Retrieves all categories",
-            description = "Fetches a list of all categories.",
+    @Operation(summary = "Retrieves all products",
+            description = "Fetches a list of all products.",
             responses = {
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Ok",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = GetCategoryResponse.class)
+                                    schema = @Schema(implementation = GetProductResponse.class)
                             )
                     ),
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Not Found",
@@ -108,7 +108,7 @@ public interface CategoryApi {
                                     mediaType = "application/json",
                                     schema = @Schema(
                                             example = "{\n" +
-                                                    "    \"message\": \"Error during execution: Unable to get categories: Error.\",\n" +
+                                                    "    \"message\": \"Error during execution: Unable to update products: Error.\",\n" +
                                                     "    \"status\": 404\n" +
                                                     "}"
                                     )
@@ -124,10 +124,10 @@ public interface CategoryApi {
                                     )
                             ))
             })
-    ResponseEntity<List<GetCategoryResponse>> getCategories();
+    ResponseEntity<List<GetProductResponse>> getProducts();
 
-    @Operation(summary = "Updates an existing category",
-            description = "Updates the details of a category by ID.",
+    @Operation(summary = "Updates an existing product",
+            description = "Updates the details of a product by ID.",
             responses = {
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Ok",
                             content = @Content(
@@ -139,7 +139,7 @@ public interface CategoryApi {
                             content = @Content(
                                     schema = @Schema(
                                             example = "{\n" +
-                                                    "    \"message\": \"Error during execution: Category with ID 1 was not found: Error.\",\n" +
+                                                    "    \"message\": \"Error during execution: Product with ID 1 was not found: Error.\",\n" +
                                                     "    \"status\": 404\n" +
                                                     "}")
                             )),
@@ -148,7 +148,7 @@ public interface CategoryApi {
                                     schema = @Schema(
                                             example = "{\n" +
                                                     "    \"message\": \"The body of the request is empty or invalid. Please provide valid data.\",\n" +
-                                                    "    \"status\": 404\n" +
+                                                    "    \"status\": 400\n" +
                                                     "}"
                                     )
                             )),
@@ -162,22 +162,22 @@ public interface CategoryApi {
                             )
                     )
             })
-    ResponseEntity<ApiResponse> updateCategory(
-            @Parameter(description = "ID of the category to update", required = true)
-            @PathVariable Integer categoryId,
-            @Parameter(description = "Request to update the category")
-            @RequestBody @Valid CategoryRequest request
+    ResponseEntity<ApiResponse> updateProduct(
+            @Parameter(description = "ID of the product to update", required = true)
+            @PathVariable Integer productId,
+            @Parameter(description = "Request to update the product")
+            @RequestBody @Valid ProductRequest request
     );
 
-    @Operation(summary = "Deletes a category",
-            description = "Removes a category from the system by specifying the ID.")
+    @Operation(summary = "Deletes a product",
+            description = "Removes a product from the system by specifying the ID.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "No Content"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Not Found.",
                     content = @Content(
                             schema = @Schema(
                                     example = "{\n" +
-                                            "    \"message\": \"Error during execution: Category with ID 1 was not found: Error.\",\n" +
+                                            "    \"message\": \"Error during execution: Product with ID 1 was not found: Error.\",\n" +
                                             "    \"status\": 404\n" +
                                             "}")
                     )),
@@ -190,8 +190,8 @@ public interface CategoryApi {
                                             "}")
                     ))
     })
-    void deleteCategory(
-            @Parameter(description = "ID of the category to delete", required = true)
-            @PathVariable Integer categoryId
+    void deletarProduct(
+            @Parameter(description = "ID of the product to delete", required = true)
+            @PathVariable Integer productId
     );
 }

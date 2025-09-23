@@ -46,7 +46,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/v1/categories").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v1/categories/{categoryId}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/v1/users/create").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/v1/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/v1/users/login").permitAll()
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)

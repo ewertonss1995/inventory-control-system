@@ -97,7 +97,7 @@ class ProductControllerTest {
         doNothing().when(useCase).deleteProduct(1);
 
         assertDoesNotThrow(() -> {
-            productController.deletarRegistro(1);
+            productController.deletarProduct(1);
         });
 
         verify(useCase, times(1)).deleteProduct(1);

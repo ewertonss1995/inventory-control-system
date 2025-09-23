@@ -1,6 +1,6 @@
 package br.com.training.inventory_control_system.domain.entities;
 
-import br.com.training.inventory_control_system.adapter.in.controllers.login.request.LoginRequest;
+import br.com.training.inventory_control_system.adapter.in.controllers.user.request.UserRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -46,7 +46,7 @@ public class User {
     )
     private Set<Role> roles;
 
-    public boolean isLoginCorrect(LoginRequest request, PasswordEncoder passwordEncoder) {
+    public boolean isLoginCorrect(UserRequest request, PasswordEncoder passwordEncoder) {
         return passwordEncoder.matches(request.password(), this.password);
     }
 }

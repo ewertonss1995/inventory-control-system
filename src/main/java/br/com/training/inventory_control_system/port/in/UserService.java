@@ -6,6 +6,7 @@ import br.com.training.inventory_control_system.domain.entities.User;
 import java.util.List;
 
 public interface UserService {
+    String userLogin(UserRequest request);
     void createUser(UserRequest request);
     void createAdminUser(UserRequest request);
     List<User> getUsers();
