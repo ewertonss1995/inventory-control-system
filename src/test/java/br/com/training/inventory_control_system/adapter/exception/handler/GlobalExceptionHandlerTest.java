@@ -3,7 +3,6 @@ package br.com.training.inventory_control_system.adapter.exception.handler;
 import br.com.training.inventory_control_system.adapter.exception.handle.GlobalExceptionHandler;
 import br.com.training.inventory_control_system.adapter.exception.response.ApiErrorResponse;
 import br.com.training.inventory_control_system.application.exception.GeneralCustomException;
-import br.com.training.inventory_control_system.application.exception.product.ProductNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,6 +14,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -27,6 +28,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class GlobalExceptionHandlerTest {
+
     @InjectMocks
     private GlobalExceptionHandler globalExceptionHandler;
 
@@ -40,16 +42,16 @@ class GlobalExceptionHandlerTest {
     private HttpMessageNotReadableException httpMessageNotReadableException;
 
     @Mock
-    private DataAccessException dataAccessException;
-
-    @Mock
     private GeneralCustomException generalCustomException;
 
     @Mock
     private RuntimeException runtimeException;
 
     @Mock
-    private ProductNotFoundException movimentoNaoEncontradoException;
+    private BadCredentialsException badCredentialsException;
+
+    @Mock
+    private AuthorizationDeniedException AathorizationDeniedException;
 
     @Test
     void testHandleValidationExceptions() {
@@ -118,22 +120,33 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
+    void testHandleBadCredentialsException() {
+        when(badCredentialsException.getMessage()).thenReturn("User or password is invalid!");
+        ResponseEntity<ApiErrorResponse> response = globalExceptionHandler.handleBadCredentialsException(badCredentialsException);
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertEquals("Invalid user: User or password is invalid!", response.getBody().getMessage());
+        assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getBody().getStatus());
+    }
+
+    @Test
+    void testHandleAuthorizationDeniedException() {
+        when(AathorizationDeniedException.getMessage()).thenReturn("Access Denied");
+        ResponseEntity<ApiErrorResponse> response = globalExceptionHandler.handleAuthorizationDeniedException(AathorizationDeniedException);
+
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        assertEquals("User is not authorized to make this request: Access Denied", response.getBody().getMessage());
+        assertEquals(HttpStatus.FORBIDDEN.value(), response.getBody().getStatus());
+    }
+
+
+    @Test
     void testHandleRuntimeException() {
         when(runtimeException.getMessage()).thenReturn("Unexpected error");
         ResponseEntity<ApiErrorResponse> response = globalExceptionHandler.handleRuntimeException(runtimeException);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals("Error during the execution of the request: Unexpected error", response.getBody().getMessage());
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getBody().getStatus());
-    }
-
-    @Test
-    void testHandleRuntimeExceptionComMovimentoNaoEncontrado() {
-        when(movimentoNaoEncontradoException.getMessage()).thenReturn("Movement not found");
-        ResponseEntity<ApiErrorResponse> response = globalExceptionHandler.handleRuntimeException(movimentoNaoEncontradoException);
-
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertEquals("Error during the execution of the request: Movement not found", response.getBody().getMessage());
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getBody().getStatus());
     }
 }

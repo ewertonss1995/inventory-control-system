@@ -1,6 +1,7 @@
-package br.com.training.inventory_control_system.adapter.in.controllers;
+package br.com.training.inventory_control_system.adapter.in.controllers.user.api;
 
-import br.com.training.inventory_control_system.adapter.in.requests.UserRequest;
+import br.com.training.inventory_control_system.adapter.in.controllers.user.request.UserRequest;
+import br.com.training.inventory_control_system.adapter.out.responses.UserLoginResponse;
 import br.com.training.inventory_control_system.domain.entities.User;
 import br.com.training.inventory_control_system.port.in.UserService;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping(value = "/v1/users", produces = APPLICATION_JSON_VALUE)
-public class UserController {
+public class UserController implements UserApi {
 
     private final UserService userService;
 
@@ -27,12 +28,21 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Override
+    @PostMapping("/login")
+    public ResponseEntity<UserLoginResponse> userLogin(@RequestBody UserRequest request) {
+        return ResponseEntity
+                .ok(new UserLoginResponse(userService.userLogin(request), 300L));
+    }
+
+    @Override
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
     public void createUser(@RequestBody UserRequest request) {
         userService.createUser(request);
     }
 
+    @Override
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create/admin")
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
@@ -40,6 +50,7 @@ public class UserController {
         userService.createAdminUser(request);
     }
 
+    @Override
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<List<User>> getUsers() {

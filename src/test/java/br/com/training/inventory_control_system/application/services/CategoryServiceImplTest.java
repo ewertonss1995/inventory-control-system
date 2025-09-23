@@ -1,6 +1,6 @@
 package br.com.training.inventory_control_system.application.services;
 
-import br.com.training.inventory_control_system.adapter.in.requests.CategoryRequest;
+import br.com.training.inventory_control_system.adapter.in.controllers.category.request.CategoryRequest;
 import br.com.training.inventory_control_system.adapter.out.mappers.CategoryMapper;
 import br.com.training.inventory_control_system.adapter.out.responses.GetCategoryResponse;
 import br.com.training.inventory_control_system.application.exception.GeneralCustomException;

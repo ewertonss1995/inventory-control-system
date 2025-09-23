@@ -39,12 +39,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v1/products").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v1/products/{productId}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v1/categories").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v1/categories/{categoryId}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/v1/users/create").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/v1/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/v1/users/login").permitAll()
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)

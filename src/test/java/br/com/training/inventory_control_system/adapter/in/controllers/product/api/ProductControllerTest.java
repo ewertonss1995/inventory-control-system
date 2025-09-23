@@ -1,6 +1,6 @@
-package br.com.training.inventory_control_system.adapter.in.controllers;
+package br.com.training.inventory_control_system.adapter.in.controllers.product.api;
 
-import br.com.training.inventory_control_system.adapter.in.requests.ProductRequest;
+import br.com.training.inventory_control_system.adapter.in.controllers.product.request.ProductRequest;
 import br.com.training.inventory_control_system.adapter.out.responses.GetProductResponse;
 import br.com.training.inventory_control_system.adapter.out.responses.ApiResponse;
 import br.com.training.inventory_control_system.port.in.ProductService;
@@ -97,7 +97,7 @@ class ProductControllerTest {
         doNothing().when(useCase).deleteProduct(1);
 
         assertDoesNotThrow(() -> {
-            productController.deletarRegistro(1);
+            productController.deletarProduct(1);
         });
 
         verify(useCase, times(1)).deleteProduct(1);

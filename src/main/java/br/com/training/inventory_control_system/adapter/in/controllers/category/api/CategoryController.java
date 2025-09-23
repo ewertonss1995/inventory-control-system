@@ -1,6 +1,6 @@
-package br.com.training.inventory_control_system.adapter.in.controllers;
+package br.com.training.inventory_control_system.adapter.in.controllers.category.api;
 
-import br.com.training.inventory_control_system.adapter.in.requests.CategoryRequest;
+import br.com.training.inventory_control_system.adapter.in.controllers.category.request.CategoryRequest;
 import br.com.training.inventory_control_system.adapter.out.responses.ApiResponse;
 import br.com.training.inventory_control_system.adapter.out.responses.GetCategoryResponse;
 import br.com.training.inventory_control_system.port.in.CategoryService;
@@ -28,7 +28,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping(value = "/v1/categories", produces = APPLICATION_JSON_VALUE)
 @Validated
-public class CategoryController {
+public class CategoryController implements CategoryApi {
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoryController.class);
 
     private final CategoryService categoryService;
@@ -37,6 +37,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+    @Override
     @PostMapping
     public ResponseEntity<ApiResponse> saveCategory(@RequestBody @Valid CategoryRequest request) {
         LOGGER.info(LOG_CATEGORY_SAVE_OPERATION, request.getCategoryName());
@@ -51,6 +52,7 @@ public class CategoryController {
                         .build());
     }
 
+    @Override
     @GetMapping("/{categoryId}")
     public ResponseEntity<GetCategoryResponse> getCategory(@PathVariable Integer categoryId) {
         LOGGER.info(LOG_CATEGORY_RECOVERY_OPERATION, categoryId);
@@ -59,6 +61,7 @@ public class CategoryController {
                 .body(categoryService.getCategory(categoryId));
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<List<GetCategoryResponse>> getCategories() {
         LOGGER.info(LOG_CATEGORIES_RECOVERY_OPERATION);
@@ -67,6 +70,7 @@ public class CategoryController {
                 .body(categoryService.getCategories());
     }
 
+    @Override
     @PutMapping("/{categoryId}")
     public ResponseEntity<ApiResponse> updateCategory(@PathVariable Integer categoryId, @RequestBody @Valid CategoryRequest request) {
         LOGGER.info(LOG_CATEGORY_UPDATE_OPERATION, categoryId);
@@ -79,9 +83,10 @@ public class CategoryController {
                 .build());
     }
 
+    @Override
     @DeleteMapping("/{categoryId}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deletarRegistro(@PathVariable Integer categoryId) {
+    public void deleteCategory(@PathVariable Integer categoryId) {
         LOGGER.info(LOG_CATEGORY_DELETE_OPERATION, categoryId);
         categoryService.deleteCategory(categoryId);
     }
