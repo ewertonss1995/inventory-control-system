@@ -51,7 +51,10 @@ class GlobalExceptionHandlerTest {
     private BadCredentialsException badCredentialsException;
 
     @Mock
-    private AuthorizationDeniedException AathorizationDeniedException;
+    private AuthorizationDeniedException authorizationDeniedException;
+
+    @Mock
+    private IllegalArgumentException illegalArgumentException;
 
     @Test
     void testHandleValidationExceptions() {
@@ -131,11 +134,22 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void testHandleAuthorizationDeniedException() {
-        when(AathorizationDeniedException.getMessage()).thenReturn("Access Denied");
-        ResponseEntity<ApiErrorResponse> response = globalExceptionHandler.handleAuthorizationDeniedException(AathorizationDeniedException);
+        when(authorizationDeniedException.getMessage()).thenReturn("Access Denied");
+        ResponseEntity<ApiErrorResponse> response = globalExceptionHandler.handleAuthorizationDeniedException(authorizationDeniedException);
 
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
         assertEquals("User is not authorized to make this request: Access Denied", response.getBody().getMessage());
+        assertEquals(HttpStatus.FORBIDDEN.value(), response.getBody().getStatus());
+    }
+
+    @Test
+    void testHandleIllegalArgumentException() {
+        String errorMessage = "You do not have permission to change an administrator user's information";
+        when(illegalArgumentException.getMessage()).thenReturn(errorMessage);
+        ResponseEntity<ApiErrorResponse> response = globalExceptionHandler.handleIllegalArgumentException(illegalArgumentException);
+
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        assertEquals("User is not authorized to make this request: ".concat(errorMessage), response.getBody().getMessage());
         assertEquals(HttpStatus.FORBIDDEN.value(), response.getBody().getStatus());
     }
 

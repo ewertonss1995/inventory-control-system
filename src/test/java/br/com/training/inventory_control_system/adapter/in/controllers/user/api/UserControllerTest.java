@@ -1,6 +1,8 @@
 package br.com.training.inventory_control_system.adapter.in.controllers.user.api;
 
+import br.com.training.inventory_control_system.adapter.in.controllers.user.request.UpdateUserRequest;
 import br.com.training.inventory_control_system.adapter.in.controllers.user.request.UserRequest;
+import br.com.training.inventory_control_system.adapter.out.responses.ApiResponse;
 import br.com.training.inventory_control_system.adapter.out.responses.UserLoginResponse;
 import br.com.training.inventory_control_system.adapter.out.responses.UserResponse;
 import br.com.training.inventory_control_system.application.services.UserServiceImpl;
@@ -15,14 +17,16 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
+import static br.com.training.inventory_control_system.mocks.Constants.UUID_MOCK;
 import static br.com.training.inventory_control_system.mocks.UserMock.getUserResponseMock;
 import static br.com.training.inventory_control_system.mocks.UserMock.getUserRequestMock;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.when;
+import static br.com.training.inventory_control_system.mocks.UserMock.getUpdateUserRequestMock;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
 class UserControllerTest {
@@ -35,11 +39,13 @@ class UserControllerTest {
 
     private UserRequest userRequest;
     private UserResponse userResponse;
+    private UpdateUserRequest updateUserRequest;
 
     @BeforeEach
     void setUp() {
         userRequest = getUserRequestMock();
         userResponse = getUserResponseMock();
+        updateUserRequest = getUpdateUserRequestMock();
     }
 
     @Test
@@ -81,5 +87,40 @@ class UserControllerTest {
         assertEquals(1, response.getBody().size());
         assertEquals(userResponse, response.getBody().get(0));
         verify(userServiceImpl, times(1)).getUsers();
+    }
+
+
+    @Test
+    void testGetUserById() {
+        when(userServiceImpl.getUserById(UUID_MOCK)).thenReturn(userResponse);
+
+        ResponseEntity<UserResponse> response = userController.getUserById(UUID_MOCK);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(userResponse, response.getBody());
+        verify(userServiceImpl, times(1)).getUserById(UUID_MOCK);
+    }
+
+    @Test
+    void testUpdateUser() {
+        String expectedMessage = "Update successful for user id ".concat(UUID_MOCK.toString()).concat(".");
+
+        doNothing().when(userServiceImpl).updateUser(any(UUID.class), any(UpdateUserRequest.class));
+
+        ResponseEntity<ApiResponse> response = userController.updateUser(UUID_MOCK, updateUserRequest);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(expectedMessage, response.getBody().message());
+        verify(userServiceImpl, times(1)).updateUser(UUID_MOCK, updateUserRequest);
+    }
+
+    @Test
+    void testDeleteUser() {
+        doNothing().when(userServiceImpl).deleteUser(UUID_MOCK);
+
+        assertDoesNotThrow(() -> userController.deleteUser(UUID_MOCK));
+
+        verify(userServiceImpl, times(1)).deleteUser(UUID_MOCK);
     }
 }

@@ -1,5 +1,6 @@
 package br.com.training.inventory_control_system.mocks;
 
+import br.com.training.inventory_control_system.adapter.in.controllers.user.request.UpdateUserRequest;
 import br.com.training.inventory_control_system.adapter.in.controllers.user.request.UserRequest;
 import br.com.training.inventory_control_system.adapter.out.responses.UserResponse;
 import br.com.training.inventory_control_system.domain.entities.Role;
@@ -23,11 +24,24 @@ public class UserMock {
         return new UserRequest(USER_MOCK, PASSWORD_MOCK);
     }
 
-    public static User getUserMock() {
+    public static UpdateUserRequest getUpdateUserRequestMock() {
+        return new UpdateUserRequest(USER_MOCK, PASSWORD_MOCK);
+    }
+
+
+    public static User getUserWithAllRolesMock() {
         Role roleAdmin = new Role(1, ROLE_ADMIN_MOCK);
         Role roleBasic = new Role(2, ROLE_BASIC_MOCK);
 
         Set<Role> roles = Set.of(roleAdmin, roleBasic);
+
+        return new User(UUID_MOCK, USER_MOCK, PASSWORD_MOCK, roles);
+    }
+
+    public static User getUserWithBasicRoleMock() {
+        Role roleBasic = new Role(2, ROLE_BASIC_MOCK);
+
+        Set<Role> roles = Set.of(roleBasic);
 
         return new User(UUID_MOCK, USER_MOCK, PASSWORD_MOCK, roles);
     }

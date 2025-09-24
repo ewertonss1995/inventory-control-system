@@ -89,6 +89,14 @@ public class GlobalExceptionHandler {
                 "User is not authorized to make this request: " + ex.getMessage(), HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
+        LOGGER.error("There was an error during execution: {}", ex.getMessage(), ex);
+
+        return buildResponseMessage(
+                "User is not authorized to make this request: " + ex.getMessage(), HttpStatus.FORBIDDEN);
+    }
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiErrorResponse> handleRuntimeException(RuntimeException ex) {
         LOGGER.error("There was an unexpected error during execution: {}", ex.getMessage(), ex);
