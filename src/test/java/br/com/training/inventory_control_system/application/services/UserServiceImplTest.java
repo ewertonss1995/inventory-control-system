@@ -24,10 +24,9 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static br.com.training.inventory_control_system.mocks.Constants.USER_MOCK;
+import static br.com.training.inventory_control_system.mocks.Constants.USER_NAME_MOCK;
 import static br.com.training.inventory_control_system.mocks.Constants.UUID_MOCK;
 import static br.com.training.inventory_control_system.mocks.RoleMock.getRoleAdmin;
 import static br.com.training.inventory_control_system.mocks.RoleMock.getRoleBasic;
@@ -167,7 +166,7 @@ class UserServiceImplTest {
 
     @Test
     void testCreateUserWhenUserExistsThenThrowException() {
-        when(userRepository.findByUserName(USER_MOCK)).thenReturn(Optional.of(userMock));
+        when(userRepository.findByUserName(USER_NAME_MOCK)).thenReturn(Optional.of(userMock));
         assertThrows(ResponseStatusException.class, () -> userServiceImpl.createUser(userRequest));
     }
 
@@ -236,7 +235,7 @@ class UserServiceImplTest {
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class, () -> userServiceImpl.updateUser(UUID_MOCK, updateUserRequestMock));
 
-        assertEquals("You do not have permission to change an administrator user's information.", exception.getMessage());
+        assertEquals("You do not have permission to update an administrator user's information.", exception.getMessage());
         verify(userRepository, times(1)).findById(UUID_MOCK);
         verify(userRepository, never()).save(userMock);
     }

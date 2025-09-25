@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 import static br.com.training.inventory_control_system.mocks.Constants.UUID_MOCK;
-import static br.com.training.inventory_control_system.mocks.Constants.USER_MOCK;
+import static br.com.training.inventory_control_system.mocks.Constants.USER_NAME_MOCK;
 import static br.com.training.inventory_control_system.mocks.Constants.PASSWORD_MOCK;
 import static br.com.training.inventory_control_system.mocks.UserMock.getUserListMock;
 import static br.com.training.inventory_control_system.mocks.UserMock.getUserRequestMock;
@@ -56,7 +56,7 @@ class UserMapperTest {
 
         assertNotNull(user);
 
-        assertEquals(USER_MOCK, user.getUserName());
+        assertEquals(USER_NAME_MOCK, user.getUserName());
         assertEquals(PASSWORD_MOCK, user.getPassword());
         assertNull(user.getUserId());
         assertNull(user.getRoles());

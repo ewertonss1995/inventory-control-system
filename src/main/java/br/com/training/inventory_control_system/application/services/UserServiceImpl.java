@@ -26,10 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,7 +55,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public String userLogin(UserRequest request) {
-        var user = userRepository.findByUserName(request.userName());
+        var user = userRepository.findByUserName(request.userName())
+                .or(() -> userRepository.findByUserEmail(request.userEmail()));
 
         if (user.isEmpty() || !user.get().isLoginCorrect(request, bCryptPasswordEncoder)) {
             throw new BadCredentialsException("User or password is invalid!");
@@ -141,7 +139,7 @@ public class UserServiceImpl implements UserService {
         userMapper.updateEntityFromRequest(request, entity);
 
         if (entity.getRoles().contains(new Role(1, RolesEnum.ADMIN.name()))) {
-            throw new IllegalArgumentException("You do not have permission to change an administrator user's information.");
+            throw new IllegalArgumentException("You do not have permission to update an administrator user's information.");
         }
 
         if (request.password() != null && !request.password().isBlank()) {

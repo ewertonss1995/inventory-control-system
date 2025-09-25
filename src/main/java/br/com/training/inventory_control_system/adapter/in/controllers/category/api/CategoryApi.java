@@ -46,6 +46,7 @@ public interface CategoryApi {
                                                     "    \"status\": 404\n" +
                                                     "}")
                             )),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Unauthorized"),
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Internal Server Error",
                             content = @Content(
                                     schema = @Schema(
@@ -137,6 +138,16 @@ public interface CategoryApi {
                                     schema = @Schema(implementation = ApiResponse.class)
                             )
                     ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Bad Request",
+                            content = @Content(
+                                    schema = @Schema(
+                                            example = "{\n" +
+                                                    "    \"message\": \"The body of the request is empty or invalid. Please provide valid data.\",\n" +
+                                                    "    \"status\": 400\n" +
+                                                    "}"
+                                    )
+                            )),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Unauthorized"),
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Not found",
                             content = @Content(
                                     schema = @Schema(
@@ -144,15 +155,6 @@ public interface CategoryApi {
                                                     "    \"message\": \"Error during execution: Category with ID 1 was not found: Error.\",\n" +
                                                     "    \"status\": 404\n" +
                                                     "}")
-                            )),
-                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Bad Request",
-                            content = @Content(
-                                    schema = @Schema(
-                                            example = "{\n" +
-                                                    "    \"message\": \"The body of the request is empty or invalid. Please provide valid data.\",\n" +
-                                                    "    \"status\": 404\n" +
-                                                    "}"
-                                    )
                             )),
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Internal Server Error",
                             content = @Content(
@@ -175,6 +177,7 @@ public interface CategoryApi {
             description = "Removes a category from the system by specifying the ID.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "No Content"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Unauthorized"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Not Found.",
                     content = @Content(
                             schema = @Schema(

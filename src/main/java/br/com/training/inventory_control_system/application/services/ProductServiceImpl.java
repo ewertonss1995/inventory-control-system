@@ -58,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
         } catch (Exception e) {
             LOGGER.error("[ProductServiceImpl] - Unexpected error retrieving products: {}", e.getMessage());
             throw new EmptyResultDataAccessException(
-                    String.format("Unable to update products: %s", e.getMessage()), 1);
+                    String.format("Unable to get products: %s", e.getMessage()), 1);
         }
     }
 

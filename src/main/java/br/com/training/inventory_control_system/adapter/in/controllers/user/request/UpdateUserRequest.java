@@ -1,12 +1,14 @@
 package br.com.training.inventory_control_system.adapter.in.controllers.user.request;
 
 import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.Email;
 
-public record UpdateUserRequest(String userName, String password) {
+public record UpdateUserRequest(@Email String userEmail, String userName, String password) {
 
-    @AssertTrue(message = "At least one field must be filled: userName or password.")
+    @AssertTrue(message = "At least one field must be filled: uerEmail, userName or password.")
     public boolean isAtLeastOneFieldNotEmpty() {
-        return (userName != null && !userName.isEmpty()) ||
+        return (userEmail != null && !userEmail.isEmpty()) ||
+                (userName != null && !userName.isEmpty()) ||
                 (password != null && !password.isEmpty());
     }
 }

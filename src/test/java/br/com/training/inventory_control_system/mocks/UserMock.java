@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Set;
 
 import static br.com.training.inventory_control_system.mocks.Constants.PASSWORD_MOCK;
-import static br.com.training.inventory_control_system.mocks.Constants.USER_MOCK;
+import static br.com.training.inventory_control_system.mocks.Constants.USER_NAME_MOCK;
+import static br.com.training.inventory_control_system.mocks.Constants.USER_EMAIL_MOCK;
 import static br.com.training.inventory_control_system.mocks.Constants.ROLE_ADMIN_MOCK;
 import static br.com.training.inventory_control_system.mocks.Constants.ROLE_BASIC_MOCK;
 import static br.com.training.inventory_control_system.mocks.Constants.UUID_MOCK;
@@ -21,11 +22,11 @@ public class UserMock {
     public static final String SECOND_USER = "Second User";
 
     public static UserRequest getUserRequestMock() {
-        return new UserRequest(USER_MOCK, PASSWORD_MOCK);
+        return new UserRequest(USER_EMAIL_MOCK, USER_NAME_MOCK, PASSWORD_MOCK);
     }
 
     public static UpdateUserRequest getUpdateUserRequestMock() {
-        return new UpdateUserRequest(USER_MOCK, PASSWORD_MOCK);
+        return new UpdateUserRequest(USER_EMAIL_MOCK, USER_NAME_MOCK, PASSWORD_MOCK);
     }
 
 
@@ -35,7 +36,7 @@ public class UserMock {
 
         Set<Role> roles = Set.of(roleAdmin, roleBasic);
 
-        return new User(UUID_MOCK, USER_MOCK, PASSWORD_MOCK, roles);
+        return new User(UUID_MOCK, USER_NAME_MOCK, USER_EMAIL_MOCK, PASSWORD_MOCK, roles);
     }
 
     public static User getUserWithBasicRoleMock() {
@@ -43,7 +44,7 @@ public class UserMock {
 
         Set<Role> roles = Set.of(roleBasic);
 
-        return new User(UUID_MOCK, USER_MOCK, PASSWORD_MOCK, roles);
+        return new User(UUID_MOCK, USER_NAME_MOCK, USER_EMAIL_MOCK, PASSWORD_MOCK, roles);
     }
 
     public static List<User> getUserListMock() {
@@ -52,8 +53,8 @@ public class UserMock {
 
         Set<Role> roles = Set.of(roleAdmin, roleBasic);
 
-        User firstUser = new User(UUID_MOCK, FIRST_USER, PASSWORD_MOCK, roles);
-        User secondUser = new User(UUID_MOCK, SECOND_USER, PASSWORD_MOCK, roles);
+        User firstUser = new User(UUID_MOCK, FIRST_USER, USER_EMAIL_MOCK, PASSWORD_MOCK, roles);
+        User secondUser = new User(UUID_MOCK, SECOND_USER, USER_EMAIL_MOCK, PASSWORD_MOCK, roles);
 
         return List.of(firstUser, secondUser);
     }
@@ -64,7 +65,7 @@ public class UserMock {
 
         Set<Role> roles = Set.of(roleAdmin, roleBasic);
 
-        return new UserResponse(UUID_MOCK, USER_MOCK, roles);
+        return new UserResponse(UUID_MOCK, USER_NAME_MOCK, USER_EMAIL_MOCK, roles);
     }
 
     public static List<UserResponse> getUserResponseListMock() {
@@ -73,8 +74,8 @@ public class UserMock {
 
         Set<Role> roles = Set.of(roleAdmin, roleBasic);
 
-        UserResponse firstUser = new UserResponse(UUID_MOCK, FIRST_USER, roles);
-        UserResponse secondUser = new UserResponse(UUID_MOCK, SECOND_USER, roles);
+        UserResponse firstUser = new UserResponse(UUID_MOCK, FIRST_USER, USER_EMAIL_MOCK, roles);
+        UserResponse secondUser = new UserResponse(UUID_MOCK, SECOND_USER, USER_EMAIL_MOCK,roles);
 
         return List.of(firstUser, secondUser);
     }

@@ -14,7 +14,8 @@ public class Constants {
     public static final LocalDateTime DATE_NOW_MOCK = LocalDateTime.now();
     public static final int ID_MOCK = 1;
     public static final BigDecimal TOTAL_PRICE_MOCK = BigDecimal.valueOf(100.00);
-    public static final String USER_MOCK = "user mock";
+    public static final String USER_NAME_MOCK = "user mock";
+    public static final String USER_EMAIL_MOCK = "user mock";
     public static final String PASSWORD_MOCK = "123456";
     public static final UUID UUID_MOCK = UUID.randomUUID();
     public static final String ROLE_ADMIN_MOCK = "ADMIN";

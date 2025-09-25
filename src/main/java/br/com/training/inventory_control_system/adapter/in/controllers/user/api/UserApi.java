@@ -54,7 +54,7 @@ public interface UserApi {
                             content = @Content(
                                     schema = @Schema(
                                             example = "{\n" +
-                                                    "    \"message\": \"You do not have permission to delete an administrator user.\",\n" +
+                                                    "    \"message\": \"User is not authorized to make this request: You do not have permission to update an administrator user.\",\n" +
                                                     "    \"status\": 403\n" +
                                                     "}")
                             )),
@@ -219,7 +219,7 @@ public interface UserApi {
                     content = @Content(
                             schema = @Schema(
                                     example = "{\n" +
-                                            "    \"message\": \"You do not have permission to delete an administrator user.\",\n" +
+                                            "    \"message\": \"User is not authorized to make this request: You do not have permission to delete an administrator user.\",\n" +
                                             "    \"status\": 403\n" +
                                             "}")
                     )),
