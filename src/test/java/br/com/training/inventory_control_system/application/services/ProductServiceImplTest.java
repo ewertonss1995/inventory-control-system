@@ -118,7 +118,7 @@ class ProductServiceImplTest {
             productServiceImpl.getProducts();
         });
 
-        assertEquals("Unable to update products: Error", exception.getMessage());
+        assertEquals("Unable to get products: Error", exception.getMessage());
         verify(repository, times(1)).findAll();
     }
 
