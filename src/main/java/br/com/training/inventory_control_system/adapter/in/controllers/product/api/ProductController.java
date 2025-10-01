@@ -26,7 +26,7 @@ import static br.com.training.inventory_control_system.adapter.Constants.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(value = "/v1/products", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/products", produces = APPLICATION_JSON_VALUE)
 @Validated
 public class ProductController implements ProductApi {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
