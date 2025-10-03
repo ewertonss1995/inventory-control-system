@@ -1,15 +1,15 @@
 package br.com.training.inventory_control_system.domain.entities;
 
 import jakarta.persistence.Id;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Table;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.FetchType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
@@ -58,5 +58,20 @@ public class Product {
     protected void onCreate() {
         this.registrationDate = LocalDateTime.now();
         this.totalPrice = unitPrice.multiply(BigDecimal.valueOf(quantity));
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productId=" + productId +
+                ", productName='" + productName + '\'' +
+                ", productDescription='" + productDescription + '\'' +
+                ", unitPrice=" + unitPrice +
+                ", quantity=" + quantity +
+                ", totalPrice=" + totalPrice +
+                ", registrationDate=" + registrationDate +
+                ", updateDate=" + updateDate +
+                ", categoryId=" + (category != null ? category.getCategoryId() : "null") +
+                '}';
     }
 }

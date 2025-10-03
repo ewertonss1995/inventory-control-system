@@ -19,6 +19,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static br.com.training.inventory_control_system.mocks.ProductMock.getProductMock;
+import static br.com.training.inventory_control_system.mocks.ProductMock.getProductRequestMock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -48,8 +50,8 @@ class ProductServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        productRequest = new ProductRequest();
-        product = new Product();
+        productRequest = getProductRequestMock();
+        product = getProductMock();
         productResponse = new GetProductResponse();
     }
 
@@ -124,27 +126,27 @@ class ProductServiceImplTest {
 
     @Test
     void testUpdateProduct() {
-        when(repository.findById(1)).thenReturn(Optional.of(product));
+        when(repository.findProductWithCategory(1)).thenReturn(Optional.of(product));
         doNothing().when(mapper).updateEntityFromRequest(productRequest, product);
         when(repository.save(product)).thenReturn(product);
 
         productServiceImpl.updateProduct(1, productRequest);
 
-        verify(repository, times(1)).findById(1);
+        verify(repository, times(1)).findProductWithCategory(1);
         verify(mapper, times(1)).updateEntityFromRequest(productRequest, product);
         verify(repository, times(1)).save(product);
     }
 
     @Test
     void testUpdateProductThrowsNotFoundException() {
-        when(repository.findById(1)).thenReturn(Optional.empty());
+        when(repository.findProductWithCategory(1)).thenReturn(Optional.empty());
 
         GeneralCustomException exception = assertThrows(GeneralCustomException.class, () -> {
             productServiceImpl.updateProduct(1, productRequest);
         });
 
         assertEquals("Error updating product: Product with ID 1 was not found.", exception.getMessage());
-        verify(repository, times(1)).findById(1);
+        verify(repository, times(1)).findProductWithCategory(1);
     }
 
     @Test

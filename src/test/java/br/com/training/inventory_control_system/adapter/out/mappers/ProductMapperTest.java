@@ -113,7 +113,6 @@ class ProductMapperTest {
         assertEquals(DESCRIPTION_MOCK, existingProduct.getProductDescription());
         assertEquals(UNIT_PRICE_MOCK, existingProduct.getUnitPrice());
         assertEquals(QUANTITY_MOCK, existingProduct.getQuantity());
-        assertEquals(CATEGORY_ID_MOCK, existingProduct.getCategory().getCategoryId());
         assertNotEquals(DATE_NOW_MOCK, existingProduct.getRegistrationDate());
     }
 

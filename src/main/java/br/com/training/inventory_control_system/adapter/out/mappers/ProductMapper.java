@@ -23,6 +23,5 @@ public interface ProductMapper {
     List<GetProductResponse> toGetProductResponseList(List<Product> entities);
 
     @Mapping(target = "registrationDate", ignore = true)
-    @Mapping(target = "category.categoryId", source = "categoryId")
     void updateEntityFromRequest(ProductRequest request, @MappingTarget Product entity);
 }
