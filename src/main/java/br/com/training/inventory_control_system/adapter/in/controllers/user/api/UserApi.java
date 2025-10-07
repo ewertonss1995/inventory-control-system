@@ -1,7 +1,9 @@
 package br.com.training.inventory_control_system.adapter.in.controllers.user.api;
 
+import br.com.training.inventory_control_system.adapter.in.controllers.user.request.RefreshTokenRequest;
 import br.com.training.inventory_control_system.adapter.in.controllers.user.request.UpdateUserRequest;
 import br.com.training.inventory_control_system.adapter.in.controllers.user.request.UserRequest;
+import br.com.training.inventory_control_system.adapter.out.responses.RefreshTokenResponse;
 import br.com.training.inventory_control_system.adapter.out.responses.UserLoginResponse;
 import br.com.training.inventory_control_system.adapter.out.responses.UserResponse;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -107,6 +109,49 @@ public interface UserApi {
     ResponseEntity<UserLoginResponse> userLogin(
             @Parameter(description = "User login request containing username and password")
             @Valid @RequestBody UserRequest request);
+
+    @Operation(summary = "Refresh access token", description = "Generate new access token using refresh token.",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Refresh token request.",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = RefreshTokenRequest.class)
+                    )
+            ))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ok"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or expired refresh token",
+                    content = @Content(
+                            schema = @Schema(
+                                    example = "{\n" +
+                                            "    \"message\": \"Refresh token expired. Please login again.\",\n" +
+                                            "    \"status\": 401\n" +
+                                            "}")
+                    )
+            ),
+            @ApiResponse(responseCode = "404", description = "Not Found - Refresh token not found",
+                    content = @Content(
+                            schema = @Schema(
+                                    example = "{\n" +
+                                            "    \"message\": \"Refresh token not found\",\n" +
+                                            "    \"status\": 404\n" +
+                                            "}")
+                    )
+            )
+    })
+    ResponseEntity<RefreshTokenResponse> refreshToken(
+            @Parameter(description = "Refresh token request")
+            @Valid @RequestBody RefreshTokenRequest request);
+
+    @Operation(summary = "Logout user", description = "Invalidate user's refresh token and logout.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ok"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    ResponseEntity<br.com.training.inventory_control_system.adapter.out.responses.ApiResponse> logout(
+            @Parameter(description = "ID of the user to logout", required = true)
+            @PathVariable UUID userId);
 
     @Operation(summary = "Create a new user", description = "Register a new user in the system.",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(

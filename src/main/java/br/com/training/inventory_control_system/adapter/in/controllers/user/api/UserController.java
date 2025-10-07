@@ -1,8 +1,10 @@
 package br.com.training.inventory_control_system.adapter.in.controllers.user.api;
 
+import br.com.training.inventory_control_system.adapter.in.controllers.user.request.RefreshTokenRequest;
 import br.com.training.inventory_control_system.adapter.in.controllers.user.request.UpdateUserRequest;
 import br.com.training.inventory_control_system.adapter.in.controllers.user.request.UserRequest;
 import br.com.training.inventory_control_system.adapter.out.responses.ApiResponse;
+import br.com.training.inventory_control_system.adapter.out.responses.RefreshTokenResponse;
 import br.com.training.inventory_control_system.adapter.out.responses.UserLoginResponse;
 import br.com.training.inventory_control_system.adapter.out.responses.UserResponse;
 import br.com.training.inventory_control_system.port.in.UserService;
@@ -32,8 +34,24 @@ public class UserController implements UserApi {
     @Override
     @PostMapping("/login")
     public ResponseEntity<UserLoginResponse> userLogin(@Valid @RequestBody UserRequest request) {
-        return ResponseEntity
-                .ok(new UserLoginResponse(userService.userLogin(request), 300L));
+        return ResponseEntity.ok(userService.userLogin(request));
+    }
+
+    @Override
+    @PostMapping("/refresh-token")
+    public ResponseEntity<RefreshTokenResponse> refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
+        return ResponseEntity.ok(userService.refreshToken(request));
+    }
+
+    @Override
+    @PostMapping("/logout/{userId}")
+    public ResponseEntity<ApiResponse> logout(@PathVariable UUID userId) {
+        userService.logout(userId);
+        
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message("User logged out successfully")
+                .status(HttpStatus.OK.value())
+                .build());
     }
 
     @Override

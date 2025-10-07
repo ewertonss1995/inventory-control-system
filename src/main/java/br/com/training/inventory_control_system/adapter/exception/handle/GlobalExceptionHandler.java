@@ -2,6 +2,8 @@ package br.com.training.inventory_control_system.adapter.exception.handle;
 
 import br.com.training.inventory_control_system.adapter.exception.response.ApiErrorResponse;
 import br.com.training.inventory_control_system.application.exception.GeneralCustomException;
+import br.com.training.inventory_control_system.application.exception.user.RefreshTokenExpiredException;
+import br.com.training.inventory_control_system.application.exception.user.RefreshTokenNotFoundException;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,6 +97,20 @@ public class GlobalExceptionHandler {
 
         return buildResponseMessage(
                 "User is not authorized to make this request: " + ex.getMessage(), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(RefreshTokenNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleRefreshTokenNotFoundException(RefreshTokenNotFoundException ex) {
+        LOGGER.error("Refresh token not found: {}", ex.getMessage(), ex);
+
+        return buildResponseMessage(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(RefreshTokenExpiredException.class)
+    public ResponseEntity<ApiErrorResponse> handleRefreshTokenExpiredException(RefreshTokenExpiredException ex) {
+        LOGGER.error("Refresh token expired: {}", ex.getMessage(), ex);
+
+        return buildResponseMessage(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(RuntimeException.class)

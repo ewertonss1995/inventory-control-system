@@ -50,16 +50,20 @@ class UserControllerTest {
 
     @Test
     void testUserLogin() {
-        String expectedToken = "token";
+        String expectedAccessToken = "access-token";
+        String expectedRefreshToken = "refresh-token";
+        UserLoginResponse expectedResponse = new UserLoginResponse(expectedAccessToken, expectedRefreshToken, 300L, 604800L);
 
-        when(userServiceImpl.userLogin(userRequest)).thenReturn(expectedToken);
+        when(userServiceImpl.userLogin(userRequest)).thenReturn(expectedResponse);
 
         ResponseEntity<UserLoginResponse> response = userController.userLogin(userRequest);
 
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(expectedToken, response.getBody().acessToken());
+        assertEquals(expectedAccessToken, response.getBody().accessToken());
+        assertEquals(expectedRefreshToken, response.getBody().refreshToken());
         assertEquals(300L, response.getBody().expiresIn());
+        assertEquals(604800L, response.getBody().refreshExpiresIn());
 
         verify(userServiceImpl, times(1)).userLogin(userRequest);
     }

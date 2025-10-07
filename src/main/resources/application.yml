@@ -30,3 +30,7 @@
       key: classpath:app.pub
     private:
       key: classpath:app.key
+app:
+  jwt:
+    expiration: 300 # 5 minutes in seconds
+    refresh-expiration: 604800 # 7 days in seconds
