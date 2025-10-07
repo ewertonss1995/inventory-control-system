@@ -1,35 +1,39 @@
-  spring:
-    application:
-      name: Inventory Control System
-    jpa:
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.PostgreSQLDialect # Parametro exigido pelo RENDER
+spring:
+  application:
+    name: Inventory Control System
+  jpa:
+    properties:
       hibernate:
-        ddl-auto: update
-        naming:
-          physical-application: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      show-sql: true
-    datasource:
-      url: ${URL_DB:jdbc:postgresql://dpg-d2tidcmuk2gs73ctvt00-a:5432/inventorycontroldb}
-      username: ${USER_DB}
-      password: ${PASSWORD_DB}
-      driver-class-name: org.postgresql.Driver  # Parametro exigido pelo RENDER
-    flyway:
-      enabled: true
-      locations: classpath:db/migration
-      baseline-on-migrate: true
-      baseline-version: 1.0
-  springdoc:
-    api-docs:
-      path: /v3/api-docs
-    swagger-ui:
-      path: /swagger-ui.html
-  jwt:
-    public:
-      key: classpath:app.pub
-    private:
-      key: classpath:app.key
+        dialect: org.hibernate.dialect.PostgreSQLDialect # Parametro exigido pelo RENDER
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-application: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+  datasource:
+    url: ${URL_DB:jdbc:postgresql://dpg-d2tidcmuk2gs73ctvt00-a:5432/inventorycontroldb}
+    username: ${USER_DB}
+    password: ${PASSWORD_DB}
+    driver-class-name: org.postgresql.Driver  # Parametro exigido pelo RENDER
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    baseline-version: 1.0
+    validate-on-migrate: false
+    clean-disabled: false
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+jwt:
+  public:
+    key: classpath:app.pub
+  private:
+    key: classpath:app.key
 app:
   jwt:
     expiration: 300 # 5 minutes in seconds

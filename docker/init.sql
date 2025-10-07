@@ -58,3 +58,17 @@ INSERT INTO products (product_name, product_description, unit_price, quantity, t
 ('Produto H', 'Descrição do Produto H', 89.99, 5, 449.95, NOW(), NOW(), 2),
 ('Produto I', 'Descrição do Produto I', 99.99, 25, 2499.75, NOW(), NOW(), 3),
 ('Produto J', 'Descrição do Produto J', 109.99, 8, 879.92, NOW(), NOW(), 1);
+
+-- Create refresh_tokens table
+CREATE TABLE IF NOT EXISTS refresh_tokens (
+    token_id UUID PRIMARY KEY,
+    token VARCHAR(255) UNIQUE NOT NULL,
+    expiry_date TIMESTAMP NOT NULL,
+    user_id UUID NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+-- Create indexes for better performance
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_token ON refresh_tokens(token);
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_user_id ON refresh_tokens(user_id);
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_expiry_date ON refresh_tokens(expiry_date);
